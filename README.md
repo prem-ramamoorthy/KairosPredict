@@ -61,7 +61,10 @@ app.
 >>Helps in loading, editing, and displaying images such as stock charts
 and UI elements.
 >>Useful for rendering icons, logos, and background images in the app.
->>
->>![Image](https://github.com/user-attachments/assets/0e7bb029-86a6-4ee7-a264-cbc49a1be529)
+
+## architecture diagram
+
+![new (1)](https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3)
+
 
 
