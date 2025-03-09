@@ -19,7 +19,7 @@
 2️⃣ Install dependencies using:  
 
 ```sh
-pip install numpy pandas scikit-learn pillow customtkinter mplfinance
+pip install numpy pandas scikit-learn pillow customtkinter mplfinance tkinter
 
 ```
 
@@ -36,7 +36,7 @@ python main.py
 | 🏷 Module | 📌 Usage |
 |-----------|---------|
 | 📊 **NumPy** | High-performance numerical computing |
-| 🎨 **Tkinter** | GUI framework for the stock dashboard |
+| 🎨 **CustomTkinter** | GUI framework for the stock dashboard |
 | 📑 **Pandas** | Data handling & analysis |
 | 🤖 **Scikit-Learn** | Machine Learning models |
 | ⚡ **Threading** | Ensures smooth app performance |
@@ -58,11 +58,11 @@ python main.py
 
 ## architecture diagram
 
-<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="600">
+<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="600" height = "500">
 
 
 
 ## 📞 Contact & Support  
 
-📩 **Email**: [KariosPredict@gamil.com]  
-📞 **phone no.**:6380498136
+📩 **Email**      : [KariosPredict@gamil.com]  
+📞 **phone no**   :6380498136
