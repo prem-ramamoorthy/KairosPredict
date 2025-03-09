@@ -230,7 +230,7 @@ def setup_ui():
     
     sign_in_frame = ctk.CTkFrame(root, corner_radius=10, border_width=2, border_color="black")
     sign_in_frame.grid(row=6, column=0, pady=3)
-    ctk.CTkLabel(sign_in_frame, text="Sign in with :", 
+    ctk.CTkLabel(sign_in_frame, text="follow us on :", 
                  font=("Helvetica", 12, "bold")).grid(row=0, column=0, pady=3, padx=50)
     ctk.CTkButton(sign_in_frame, image=github , 
                   fg_color= "transparent" , hover_color= "grey", 
