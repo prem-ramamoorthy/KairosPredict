@@ -59,8 +59,8 @@ def open_stock_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=30, padx=20 ,sticky = "se" )
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
+                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
                         size=(200, 60))
     
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
@@ -71,18 +71,18 @@ def open_stock_ui():
     body_header = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black")
     body_header.grid(row=1, column=0, pady=3 , padx= 10, sticky="ew")
 
-    profile_image_light = make_circle(Image.open(r"static\profiles\{}.png".format(get_profile_letter())).convert("RGBA"))
-    profile_image_dark = make_circle(Image.open(r"static\profiles\{}-w.png".format(get_profile_letter())).convert("RGBA"))
+    profile_image_light = make_circle(Image.open(r"KairosPredict\static\profiles\{}.png".format(get_profile_letter())).convert("RGBA"))
+    profile_image_dark = make_circle(Image.open(r"KairosPredict\static\profiles\{}-w.png".format(get_profile_letter())).convert("RGBA"))
 
     profile_image = ctk.CTkImage(light_image=profile_image_light,
                                  dark_image=profile_image_dark,
                                  size=(35,35))
     
-    logout_image = ctk.CTkImage(light_image=Image.open(r"static\images\logout-w.png"),
-                                dark_image=Image.open(r"static\images\logout.png"),
+    logout_image = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logout-w.png"),
+                                dark_image=Image.open(r"KairosPredict\static\images\logout.png"),
                                 size=(20,20))
-    settings_image = ctk.CTkImage(light_image=Image.open(r"static\images\settings.png"),
-                                dark_image=Image.open(r"static\images\settings-w.png"),
+    settings_image = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\settings.png"),
+                                dark_image=Image.open(r"KairosPredict\static\images\settings-w.png"),
                                 size=(20,20))
 
     ctk.CTkLabel(body_header, text="Stock Analysis",
@@ -127,8 +127,8 @@ def open_stock_ui():
                                                )
     time_frame_button.grid(row=2, column=3, pady=10 , sticky= "w")
 
-    chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),
-                                dark_image=Image.open(r"static\images\edit_chart-w.png"),
+    chart_edit_image = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\edit_chart.png"),
+                                dark_image=Image.open(r"KairosPredict\static\images\edit_chart-w.png"),
                                 size=(18,18))
     chart_edit_button = ctk.CTkButton(body_header, image=chart_edit_image, text="Edit chart", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
@@ -163,8 +163,8 @@ def setup_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=20, padx=20 ,sticky = "se")
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
+                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
                         size=(200, 60))
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
@@ -215,17 +215,17 @@ def setup_ui():
                    ).grid(row=1, column=1, pady=5 , padx = 5 )
 
     #images 
-    instagram = ctk.CTkImage(light_image=Image.open(r"static\images\instagram.png"), 
-                        dark_image=Image.open(r"static\images\instagram-w.png"),
+    instagram = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\instagram.png"), 
+                        dark_image=Image.open(r"KairosPredict\static\images\instagram-w.png"),
                         size=(30,30))
-    facebook = ctk.CTkImage(light_image=Image.open(r"static\images\facebook.png"),
-                            dark_image=Image.open(r"static\images\facebook-w.png"),
+    facebook = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\facebook.png"),
+                            dark_image=Image.open(r"KairosPredict\static\images\facebook-w.png"),
                             size=(30,30))
-    github = ctk.CTkImage(light_image=Image.open(r"static\images\github.png"),
-                          dark_image=Image.open(r"static\images\github-w.png"),
+    github = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\github.png"),
+                          dark_image=Image.open(r"KairosPredict\static\images\github-w.png"),
                           size=(30,30))
-    linkedin = ctk.CTkImage(light_image=Image.open(r"static\images\linkedin.png"),
-                            dark_image=Image.open(r"static\images\linkedin-w.png"),
+    linkedin = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\linkedin.png"),
+                            dark_image=Image.open(r"KairosPredict\static\images\linkedin-w.png"),
                             size=(30,30))
     
     sign_in_frame = ctk.CTkFrame(root, corner_radius=10, border_width=2, border_color="black")
@@ -251,6 +251,6 @@ if __name__ == "__main__" :
     root = ctk.CTk()
     root.title("KairosPredict/login")
     root.geometry("345x580")
-    root.iconbitmap(r"static\images\icon.ico")
+    root.iconbitmap(r"KairosPredict\static\images\icon.ico")
     setup_ui()
     root.mainloop()
