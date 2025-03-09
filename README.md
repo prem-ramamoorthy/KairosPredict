@@ -65,7 +65,15 @@ python main.py
 - 🔹 Integration with **AI-based models**  
 - 🔹 Mobile and web-based versions  
 
+<<<<<<< HEAD
 ---
+=======
+## architecture diagram
+
+![new (1)](https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3)
+
+
+>>>>>>> f9ec8f97d4a73975dd31f6f0a821282735058c37
 
 ## 📞 Contact & Support  
 
