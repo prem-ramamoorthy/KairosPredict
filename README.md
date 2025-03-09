@@ -58,7 +58,7 @@ python main.py
 
 ## architecture diagram
 
-<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="600" height = "500">
+<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="700" height = "700">
 
 
 
