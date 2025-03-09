@@ -19,12 +19,8 @@
 2️⃣ Install dependencies using:  
 
 ```sh
-pip install numpy 
-pip install pandas 
-pip install scikit-learn 
-pip install tkinter 
-pip installthreading 
-pip installpillow
+pip install numpy pandas scikit-learn pillow customtkinter mplfinance
+
 ```
 
 3️⃣ Run the application  
@@ -59,15 +55,12 @@ python main.py
 - 🔹 Integration with **AI-based models**  
 - 🔹 Mobile and web-based versions  
 
-<<<<<<< HEAD
----
-=======
+
 ## architecture diagram
 
-![new (1)](https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3)
+<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="600">
 
 
->>>>>>> f9ec8f97d4a73975dd31f6f0a821282735058c37
 
 ## 📞 Contact & Support  
 
