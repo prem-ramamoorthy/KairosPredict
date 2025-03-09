@@ -49,12 +49,6 @@ python main.py
 
 ---
 
-## 🏛 System Architecture  
-
-![Architecture](https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3)  
-
----
-
 ## 🌟 Why Use KairosPredict?  
 
 ✔️ **65%+ accuracy in predictions**  
@@ -78,3 +72,4 @@ python main.py
 ## 📞 Contact & Support  
 
 📩 **Email**: [KariosPredict@gamil.com]  
+📞 **phone no.**:6380498136
