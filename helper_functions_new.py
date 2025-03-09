@@ -48,7 +48,7 @@ def register_user(root , reg_window , setup_ui ,username , password , phone , em
         return
     hashed_password = hash_password(password)
     try:
-        conn = sqlite3.connect("users.db")
+        conn = sqlite3.connect(r"KairosPredict\users.db")
         cursor = conn.cursor()
         cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
         cursor.execute("INSERT INTO users_data (username, first_name, last_name, email, phone) VALUES (?, ?, ?, ?, ?)", (username, first_name, last_name, email, phone))
@@ -113,7 +113,7 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def setup_db():
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(r"KairosPredict\users.db")
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                       username TEXT UNIQUE NOT NULL PRIMARY KEY,
@@ -128,7 +128,7 @@ def setup_db():
     conn.close()
 
 def check_user(username):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(r"KairosPredict\users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
     user = cursor.fetchone()
@@ -172,7 +172,7 @@ def generate_otp():
     return otp
 
 def send_otp(username):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(r"KairosPredict\users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT email FROM users_data WHERE username = ?", (username,))
     user_email = cursor.fetchone()
@@ -207,7 +207,7 @@ def change_password(root , change_password_window ,setup_ui, username , new_pass
         return
     hashed_password = hash_password(new_password)
     try:
-        conn = sqlite3.connect("users.db")
+        conn = sqlite3.connect(r"KairosPredict\users.db")
         cursor = conn.cursor()
         cursor.execute("UPDATE users SET password = ? WHERE username = ?", (hashed_password, username))
         conn.commit()
@@ -284,13 +284,13 @@ def login_user(user_entry , pass_entry , open_stock_ui):
     update_profile_letter(username[0].lower())
     password = pass_entry
     hashed_password = hash_password(password)
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(r"KairosPredict\users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed_password))
     result = cursor.fetchone()
     conn.close()
     if result:
-        conn1 = sqlite3.connect("users.db")
+        conn1 = sqlite3.connect(r"KairosPredict\users.db")
         cur = conn1.cursor()
         cur.execute("SELECT * FROM users_data WHERE username = ?", (username,))
         r = cur.fetchmany(1)
@@ -316,7 +316,7 @@ last_name = ""
 email = ""
 phone = ""
 profile_letter = "a"
-list_of_select_colors = load_colors("chart_configuration")
+list_of_select_colors = load_colors(r"KairosPredict\chart_configuration")
 current_user = None
 setup_db()
     
