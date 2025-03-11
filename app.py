@@ -5,7 +5,7 @@ from helper_functions_new import *
 from contact_us import open_contact_us_window
 from profile_window import greet_user
 from chart_config_window import chart_config
-from change_password import open_change_password
+from change_password import open_change_password1
 from reset_password import open_reset_password
 from about_us_window import open_about_us
 from tradingview_ta import TA_Handler , Interval
@@ -94,7 +94,7 @@ def open_stock_ui():
     logout_button.grid(row=0, column=21, pady=5, padx=5, sticky="ew")
     settings_button = ctk.CTkButton(body_header, image=settings_image, text="changePass", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
-                  compound="top", command=lambda :open_change_password(root ,cancel ,switch_event , switch_var , setup_ui ), width=50)
+                  compound="top", command=lambda :open_change_password1(root ,cancel ,switch_event , switch_var , setup_ui ), width=50)
     settings_button.grid(row=0, column=22, pady=5, padx=5, sticky="ew")
 
     element_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black")

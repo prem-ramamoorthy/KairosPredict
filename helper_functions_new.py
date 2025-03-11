@@ -28,6 +28,9 @@ def cancel(windowname , root , setup_ui):
     root.deiconify()
     setup_ui()
 
+def cancel1(windowname):
+    windowname.destroy()
+
 def update_profile_letter(l):
     global profile_letter 
     profile_letter = l
