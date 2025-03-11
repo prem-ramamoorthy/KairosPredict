@@ -65,7 +65,7 @@ def chart_config(root, switch_event , switch_var):
     edge_color_button.grid(row = 4 , column = 3 , padx = 10 , pady = 10 , sticky = "w")
     grid_color_button = ctk.CTkButton(main_frame, text="" ,border_width=1,border_color="black",corner_radius=60, width=20, height=20, fg_color=list_of_select_colors[10], command=lambda :pick_color(grid_color_button , 10))
     grid_color_button.grid(row = 5 , column = 1 , padx = 10 , pady = 10 , sticky = "w")
-    submit_button = ctk.CTkButton(main_frame, text="Submit" ,text_color="white",fg_color="gray",border_color="black",border_width= 1 , hover_color= "gray" , command=lambda :save_colors("chart_configuration" , list_of_select_colors, chart_edit_window))
+    submit_button = ctk.CTkButton(main_frame, text="Submit/Exit" ,text_color="white",fg_color="gray",border_color="black",border_width= 1 , hover_color= "gray" , command=lambda :save_colors("chart_configuration" , list_of_select_colors, chart_edit_window))
     submit_button.grid(row = 6 , column = 1 , padx = 10 , pady = 10 , sticky = "ew")
     reset_button = ctk.CTkButton(main_frame, text="Reset" ,text_color="white",fg_color="gray",border_color="black",border_width= 1 , hover_color= "gray" , command=lambda :reset(chart_edit_window))
     reset_button.grid(row = 6 , column = 2, padx = 10 , pady = 10 , sticky = "ew")

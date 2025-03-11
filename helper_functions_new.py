@@ -9,6 +9,15 @@ import json
 import smtplib
 import ssl
 from email.message import EmailMessage
+from chart_maker import update_configuration
+
+def set_chart_style(value):
+    global chart_style 
+    chart_style = value
+
+def get_chart_style():
+    global chart_style
+    return chart_style
 
 def submit_feedback(feedback_entry):
         feedback = feedback_entry.get("1.0", END).strip()
@@ -20,7 +29,12 @@ def submit_feedback(feedback_entry):
             messagebox.showwarning("Empty Feedback", "Please enter your feedback before submitting ")
 
 def segmented_button_callback(value):
-    print("segmented button clicked:", value)
+    global timeframe
+    timeframe = value
+
+def get_time_frame():
+    global timeframe
+    return timeframe
 
 def cancel(windowname , root , setup_ui):
     global is_stock_window_opened
@@ -76,6 +90,7 @@ def register_user(root , reg_window , setup_ui ,username , password , phone , em
 def save_colors(filename, colors , chart_edit_window):
     with open(filename, 'w') as file:
         json.dump(colors, file, indent=4)
+    update_configuration()
     try : 
         chart_edit_window.destroy()
     except Exception as e :
@@ -252,6 +267,7 @@ def reset(chart_edit_window):
     global list_of_select_colors
     list_of_select_colors = [ 'green','red', 'lime','red','green',\
                          'red', 'green','red',"white","black",'gray' , "Solid line"]
+    save_colors("chart_configuration" , list_of_select_colors , None )
     chart_edit_window.destroy()
 
 def chart_style(selected_style):
@@ -336,6 +352,14 @@ def get_is_stock_window_opened():
     global is_stock_window_opened
     return is_stock_window_opened
 
+def set_stock_detail(value):
+    global stock_detail
+    stock_detail = value
+
+def get_stock_detail():
+    global stock_detail
+    return stock_detail
+
 is_stock_window_opened = False
 username = ""
 first_name = ""
@@ -343,7 +367,10 @@ last_name = ""
 email = ""
 phone = ""
 profile_letter = "a"
-list_of_select_colors = load_colors(r"KairosPredict\chart_configuration")
+list_of_select_colors = load_colors("chart_configuration")
 current_user = None
+timeframe = '1d'
+chart_style = "Candlestick chart"
+stock_detail = "AAPL"
 setup_db()
     

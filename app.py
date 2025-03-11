@@ -10,51 +10,59 @@ from reset_password import open_reset_password
 from about_us_window import open_about_us
 from tradingview_ta import TA_Handler , Interval
 from register_window import open_register
+from chart_maker import plot_async
 
 def get_stock_analysis(selected_stock):
-    handler = TA_Handler(
-        symbol=selected_stock,
-        screener="america",
-        exchange="NASDAQ",
-        interval=Interval.INTERVAL_1_DAY
-    )
-    analysis = handler.get_analysis()
-    analysts_analysis = analysis.summary
-    if analysts_analysis:
-        data = ""
-        first = True
-        for key, value in analysts_analysis.items():
-            if first:
-                analysts_analysis = value
-                first = False
-            else:
-                data += f"{key}: {value} | "
-        data = f"{analysts_analysis}-> " + data
-        analysis_label.grid(row=0, column=3, pady=3, padx=10)
-        temp_lable.grid_remove()
-        analysis_label.configure(text=data)
-        timeframe_label.grid(row=2, column=2, pady=3 , sticky= "nw")
-        time_frame_button.grid(row=2, column=3, pady=3 , sticky= "nw")
-    else:
-        analysis_label.configure(text=f"⚠️ No data available")
-
+    set_stock_detail(selected_stock)
+    try :
+        handler = TA_Handler(
+            symbol=selected_stock,
+            screener="america",
+            exchange="NASDAQ",
+            interval=Interval.INTERVAL_1_DAY
+        )
+        analysis = handler.get_analysis()
+        analysts_analysis = analysis.summary
+        if analysts_analysis:
+            data = ""
+            first = True
+            for key, value in analysts_analysis.items():
+                if first:
+                    analysts_analysis = value
+                    first = False
+                else:
+                    data += f"{key}: {value} | "
+            data = f"{analysts_analysis}-> " + data
+            if len(data) < 50:
+                padding = (50 - len(data)) // 2
+                data = ' ' * padding + data + ' ' * padding
+            analysis_label.grid(row=0, column=3, pady=3, padx=10)
+            temp_lable.grid_remove()
+            analysis_label.configure(text=data)
+            timeframe_label.grid(row=2, column=2, pady=3 , sticky= "nw")
+            time_frame_button.grid(row=2, column=3, pady=3 , sticky= "nw")
+        else:
+            analysis_label.configure(text=f"⚠️ No data available")
+    except Exception as e :
+        analysis_label.configure(text=f"⚠️ Error: {str(e)}")
+        
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
-        time_frame_button , timeframe_label 
+        time_frame_button , timeframe_label , show_chart_button
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
-    stock_window.geometry("850x850")
+    stock_window.geometry("880x900")
 
     header = ctk.CTkFrame(stock_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
     switch = ctk.CTkSwitch(stock_window, text="Theme", command=switch_event,
                            variable=switch_var, onvalue="on", 
                            offvalue="off", height= 10, width = 20)
-    switch.grid(row=10, column=0, pady=30, padx=20 ,sticky = "se" )
+    switch.grid(row=10, column=0, pady=10, padx=20 ,sticky = "se" )
     
     logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
                         dark_image=Image.open(r"static\images\logo-w.png"),
@@ -105,15 +113,15 @@ def open_stock_ui():
     ctk.CTkLabel(element_frame, text="Analyst's Analysis :", font=("Helvetica", 14, "bold")).grid(row=0, column=2, pady=3, padx=10)
     temp_lable = ctk.CTkLabel(element_frame, text="", font=("Helvetica", 14, "bold"))
     temp_lable.grid(row=0, column=3, pady=3, padx=10)
-    analysis_label = ctk.CTkLabel(element_frame, text=" << your Recomendation will display here >>", font=("Helvetica", 14, "bold"))
-    analysis_label.grid(row=0, column=3, pady=3, padx=10)
+    analysis_label = ctk.CTkLabel(element_frame, text=" <<<  your Recomendation will display here  >>>", font=("Helvetica", 14, "bold"))
+    analysis_label.grid(row=0, column=3, pady=3)
     ctk.CTkLabel(element_frame, text="Plot Style", font=("Helvetica", 14, "bold")).grid(row=2, column=0, pady=3, padx=10)
-    plot_style = ctk.CTkComboBox(element_frame, values=["Line chart","Candlestick chart","OHLC chart" , " ⚠️ Histogram" , "⚠️ Scatter Plot" ,"⚠️ Renko Chart" , "⚠️ Kagi Chart"])
+    plot_style = ctk.CTkComboBox(element_frame, values=["Candlestick chart","Line chart","OHLC chart" ,"Renko Chart" ,"⚠️Point and Figure Chart"] , command= set_chart_style)
     plot_style.grid(row=2, column=1, pady=3, padx=10)
-    time_frame_button_var = ctk.StringVar(value="Value 1")
+    time_frame_button_var = ctk.StringVar(value=" 1d ")
     timeframe_label = ctk.CTkLabel(element_frame, text="Select TimeFrame :", font=("Helvetica", 14, "bold"))
     timeframe_label.grid(row = 2 , column = 2, pady=3, padx=10 , sticky = "w")
-    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=["1m", "5m", "15m", "30m", "1h", "4h", "1d"],
+    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=[" 1m ", " 5m " , " 15m ", " 30m ", " 1h ", " 4h ", " 1d "],
                                                command=segmented_button_callback,
                                                variable=time_frame_button_var,
                                                corner_radius=10,
@@ -122,7 +130,14 @@ def open_stock_ui():
                                                text_color="black" if ctk.get_appearance_mode() == "light" else "white",
                                                text_color_disabled="black" if ctk.get_appearance_mode() == "light" else "white"
                                                )
-    time_frame_button.grid(row=2, column=3, pady=10 , sticky= "w")
+    time_frame_button.grid(row=2, column=3, pady=10 , padx = 30)
+    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 500 , width= 800 )
+    main_body_frame.grid(row = 3 , column = 0 , pady = 10 , padx = 10 )
+    show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
+                                      border_color="black", border_width=2, text_color= "black" ,
+                                      corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
+                                        hover_color="gray", width=50 )
+    show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),
                                 dark_image=Image.open(r"static\images\edit_chart-w.png"),
@@ -131,17 +146,17 @@ def open_stock_ui():
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda: chart_config(root, switch_event, switch_var), width=50)
     chart_edit_button.grid(row=0, column=23, pady=5, padx=5, sticky="ew")
-    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 500 , width= 800 )
-    main_body_frame.grid(row = 3 , column = 0 , pady = 10 , padx = 10 )
-
+    
 def switch_event():
     try : 
         if ctk.get_appearance_mode() == "Dark":
+            show_chart_button.configure(text_color = "black" , border_color = "black")
             logout_button.configure(text_color = "black")
             settings_button.configure(text_color = "black")
             chart_edit_button.configure(text_color = "black")
             profile_button.configure(hover_color ="#335878")
         else :
+            show_chart_button.configure(text_color = "white" , border_color = "white")
             chart_edit_button.configure(text_color = "white")
             logout_button.configure(text_color = "white")
             settings_button.configure(text_color = "white")

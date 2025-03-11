@@ -1,60 +1,35 @@
+import customtkinter as ctk
 import mplfinance as mpf
 import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-def plot_advanced_candlestick(data):
-    """
-    Plots an advanced TradingView-like candlestick chart using mplfinance.
+# Sample stock data (Date, Open, High, Low, Close, Volume)
+data = {
+    "Date": pd.date_range(start="2024-03-01", periods=10, freq="D"),
+    "Open": [100, 102, 104, 103, 106, 108, 107, 109, 111, 110],
+    "High": [105, 106, 107, 108, 110, 111, 112, 114, 115, 116],
+    "Low": [98, 100, 102, 101, 104, 106, 105, 108, 109, 108],
+    "Close": [102, 104, 103, 106, 108, 107, 109, 111, 110, 112],
+    "Volume": [1000, 1200, 1500, 1100, 1700, 1600, 1400, 1800, 2000, 1900],
+}
+df = pd.DataFrame(data)
+df.set_index("Date", inplace=True)
+ctk.set_appearance_mode("dark")
+root = ctk.CTk()
+root.geometry("700x600")
+root.title("Candlestick Chart in CustomTkinter")
+def plot_candlestick():
+    fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(6, 4), gridspec_kw={'height_ratios': [3, 1]})
+    mpf.plot(df, type="candle", style="charles", ax=ax_candle, volume=ax_volume)
 
-    Parameters:
-    - data (pd.DataFrame): Data with columns ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+    canvas = FigureCanvasTkAgg(fig, master=frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
     
-    The 'Date' column should be in datetime format.
-    """
-    # Ensure Date is the index
-    data.set_index('Date', inplace=True)
+frame = ctk.CTkFrame(root)
+frame.pack(pady=10, padx=10, fill="both", expand=True)
+plot_button = ctk.CTkButton(root, text="Plot Candlestick Chart", command=plot_candlestick)
+plot_button.pack(pady=10)
 
-    # Define moving averages
-    ma_short = data['Close'].rolling(window=10).mean()  # Short-term SMA
-    ma_long = data['Close'].rolling(window=50).mean()   # Long-term SMA
-
-    # Define styles
-    mc = mpf.make_marketcolors(
-        up='green', down='red',
-        wick={'up': 'lime', 'down': 'red'},  # Wick colors
-        edge={'up': 'green', 'down': 'red'},  # Candlestick border colors
-        volume={'up': 'green', 'down': 'red'}  # Volume bar colors
-    )
-
-    s = mpf.make_mpf_style(
-        marketcolors=mc, 
-        gridcolor='gray', 
-        gridstyle="--",
-        facecolor="white", 
-        edgecolor="black"
-    )
-
-    # Plot candlestick chart with moving averages and volume
-    mpf.plot(
-        data,
-        type='candle',
-        style=s,
-        volume=True,
-        mav=(10, 50),  # Include 10-day and 50-day moving averages
-        title="Advanced TradingView-Style Candlestick Chart",
-        ylabel="Price",
-        ylabel_lower="Volume",
-        figratio=(16, 8),  # Adjust figure size
-        figscale=1.2  # Scale up the figure
-    )
-
-# Example data
-data = pd.DataFrame({
-    'Date': pd.date_range(start='2024-03-01', periods=10, freq='D'),
-    'Open': [100, 102, 104, 101, 103, 107, 106, 109, 111, 110],
-    'High': [105, 107, 108, 106, 110, 112, 113, 114, 115, 116],
-    'Low': [98, 99, 101, 100, 102, 105, 104, 108, 109, 108],
-    'Close': [103, 105, 102, 104, 107, 109, 110, 113, 112, 115],
-    'Volume': [102, 100, 101 , 100 , 99 , 98 , 112 , 120 , 113 , 112 ]
-})
-
-plot_advanced_candlestick(data)
+root.mainloop()
