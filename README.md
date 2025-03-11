@@ -26,7 +26,7 @@ pip install numpy pandas scikit-learn pillow customtkinter mplfinance tkinter
 3️⃣ Run the application  
 
 ```sh
-python main.py
+python app.py
 ```
 
 ---
@@ -58,7 +58,7 @@ python main.py
 
 ## architecture diagram
 
-<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="700" height = "700">
+<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="650" height = "650">
 
 
 
