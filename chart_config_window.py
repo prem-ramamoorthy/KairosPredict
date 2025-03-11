@@ -17,8 +17,8 @@ def chart_config(root, switch_event , switch_var):
                            variable=switch_var, onvalue="on", 
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=10, padx=10 , sticky = "w")
-    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
-                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
+                        dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 , sticky = "ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",

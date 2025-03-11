@@ -18,8 +18,8 @@ def open_register(root , switch_event , switch_var , cancel , setup_ui ):
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=30, padx=20 ,sticky = "se")
     
-    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
-                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
+                        dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=15 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",

@@ -22,8 +22,8 @@ def open_reset_password(root , switch_event , switch_var , cancel ,  setup_ui):
     switch.grid(row=0, column=1, pady=20, padx= 15 ,sticky = "se")
     header = ctk.CTkFrame(reset_password_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=5, sticky="ew")
-    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
-                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
+                        dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",

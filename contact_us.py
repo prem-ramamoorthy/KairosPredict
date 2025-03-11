@@ -1,16 +1,9 @@
 import customtkinter as ctk 
 from tkinter import *
-from tkinter import messagebox
-from PIL import Image, ImageTk
+from PIL import Image
+from helper_functions_new import submit_feedback
 
 def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
-    def submit_feedback():
-        feedback = feedback_entry.get("1.0", END).strip()
-        if feedback:
-            messagebox.showinfo("Feedback Submitted", "Thank you for your feedback!")
-            feedback_entry.delete("1.0", END)
-        else:
-            messagebox.showwarning("Empty Feedback", "Please enter your feedback before submitting ")
     contact_us_window = ctk.CTkToplevel(root)
     contact_us_window.protocol("WM_DELETE_WINDOW", lambda: None)
     button_frame = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")
@@ -26,8 +19,8 @@ def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
                   fg_color= "red",hover_color= "#59BACC").grid(row=0, column=0, pady=10 , padx=40)
     contact_us_frame_header = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")
     contact_us_frame_header.grid(row=0, column=0, pady=10 , padx=10)
-    logo = ctk.CTkImage(light_image=Image.open(r"KairosPredict\static\images\logo.png"), 
-                        dark_image=Image.open(r"KairosPredict\static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
+                        dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
     ctk.CTkLabel(contact_us_frame_header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(contact_us_frame_header, text="Empowering Decisions with Smart Predictions.",
@@ -41,7 +34,7 @@ def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
                                      border_color= "black" , corner_radius= 10, border_width= 2 )
     feedback_entry.grid(row=2, column=0, pady=10 , padx= 40)
     feedback_entry.bind("<Return>" , lambda e : submit_feedback())
-    ctk.CTkButton(feed_back_body, text="Submit Feedback", command=submit_feedback, corner_radius= 20,
+    ctk.CTkButton(feed_back_body, text="Submit Feedback", command=lambda :submit_feedback(feedback_entry), corner_radius= 20,
                   fg_color="blue",hover_color= "grey" ).grid(row=3, column=0, pady=10, padx=10)
     ctk.CTkLabel(contact_us_frame_body, text="Contact Info", font=("Arial", 18, "bold")).grid(row=4, column=0, pady= 3, padx=10)
     email_heading = ctk.CTkLabel(contact_us_frame_body, text="Email :", font=("Arial", 14, "bold"))

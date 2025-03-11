@@ -10,6 +10,15 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 
+def submit_feedback(feedback_entry):
+        feedback = feedback_entry.get("1.0", END).strip()
+        if feedback:
+            send_email("kairospredict@gmail.com" , feedback)
+            messagebox.showinfo("Feedback Submitted", "Thank you for your feedback!")
+            feedback_entry.delete("1.0", END)
+        else:
+            messagebox.showwarning("Empty Feedback", "Please enter your feedback before submitting ")
+
 def segmented_button_callback(value):
     print("segmented button clicked:", value)
 
@@ -48,7 +57,7 @@ def register_user(root , reg_window , setup_ui ,username , password , phone , em
         return
     hashed_password = hash_password(password)
     try:
-        conn = sqlite3.connect(r"KairosPredict\users.db")
+        conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
         cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, hashed_password))
         cursor.execute("INSERT INTO users_data (username, first_name, last_name, email, phone) VALUES (?, ?, ?, ?, ?)", (username, first_name, last_name, email, phone))
@@ -113,7 +122,7 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def setup_db():
-    conn = sqlite3.connect(r"KairosPredict\users.db")
+    conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                       username TEXT UNIQUE NOT NULL PRIMARY KEY,
@@ -128,7 +137,7 @@ def setup_db():
     conn.close()
 
 def check_user(username):
-    conn = sqlite3.connect(r"KairosPredict\users.db")
+    conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
     user = cursor.fetchone()
@@ -140,19 +149,34 @@ def send_email(receiver_email, otp):
     SMTP_PORT = 465 
     sender_email = "kairospredict@gmail.com"  
     sender_password = "jxrs asoe pjfe abxm" 
-    subject = "Your Password Reset OTP for Kairos Predict"
-    body = f"""
-    Dear User,
+    if type(otp) == type(1) :
+        subject = "Your Password Reset OTP for Kairos Predict"
+        body = f"""
+        Dear User,
 
-    Your One-Time Password (OTP) for secure access is: *{otp}*
+        Your One-Time Password (OTP) for secure access is: *{otp}*
 
-    Please use this OTP within the next 10 minutes. Do not share it with anyone.
+        Please use this OTP within the next 10 minutes. Do not share it with anyone.
 
-    If you didn't request this OTP, please ignore this email or contact support.
+        If you didn't request this OTP, please ignore this email or contact support.
 
-    Best regards,  
-    Kairos Predict
-    """
+        Best regards,  
+        Kairos Predict
+        """
+    else:
+        subject = "New User Feedback Received"
+        body = f"""
+        Dear Team,
+
+        You have received new feedback from a user:
+
+        "{otp}"
+
+        Please review and take necessary actions.
+
+        Best regards,  
+        Kairos Predict
+        """
     msg = EmailMessage()
     msg.set_content(body)
     msg["Subject"] = subject
@@ -172,7 +196,7 @@ def generate_otp():
     return otp
 
 def send_otp(username):
-    conn = sqlite3.connect(r"KairosPredict\users.db")
+    conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT email FROM users_data WHERE username = ?", (username,))
     user_email = cursor.fetchone()
@@ -207,7 +231,7 @@ def change_password(root , change_password_window ,setup_ui, username , new_pass
         return
     hashed_password = hash_password(new_password)
     try:
-        conn = sqlite3.connect(r"KairosPredict\users.db")
+        conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
         cursor.execute("UPDATE users SET password = ? WHERE username = ?", (hashed_password, username))
         conn.commit()
@@ -284,13 +308,13 @@ def login_user(user_entry , pass_entry , open_stock_ui):
     update_profile_letter(username[0].lower())
     password = pass_entry
     hashed_password = hash_password(password)
-    conn = sqlite3.connect(r"KairosPredict\users.db")
+    conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed_password))
     result = cursor.fetchone()
     conn.close()
     if result:
-        conn1 = sqlite3.connect(r"KairosPredict\users.db")
+        conn1 = sqlite3.connect("users.db")
         cur = conn1.cursor()
         cur.execute("SELECT * FROM users_data WHERE username = ?", (username,))
         r = cur.fetchmany(1)
