@@ -1,0 +1,18 @@
+# Ignore SQLite database files
+KairosPredict/users.db
+*.sqlite
+*.sqlite3
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
