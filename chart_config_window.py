@@ -69,3 +69,4 @@ def chart_config(root, switch_event , switch_var):
     submit_button.grid(row = 6 , column = 1 , padx = 10 , pady = 10 , sticky = "ew")
     reset_button = ctk.CTkButton(main_frame, text="Reset" ,text_color="white",fg_color="gray",border_color="black",border_width= 1 , hover_color= "gray" , command=lambda :reset(chart_edit_window))
     reset_button.grid(row = 6 , column = 2, padx = 10 , pady = 10 , sticky = "ew")
+    
