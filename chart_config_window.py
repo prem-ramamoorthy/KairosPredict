@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import customtkinter as ctk 
 from PIL import Image, ImageTk, ImageDraw
-from helper_functions_new import save_colors,chart_style , pick_color , reset , get_list
+from helper_functions_new import save_colors,chart_style1 , pick_color , reset , get_list
 
 def chart_config(root, switch_event , switch_var):
     global chart_edit_window
@@ -39,10 +39,9 @@ def chart_config(root, switch_event , switch_var):
     ctk.CTkLabel(main_frame , text = "Edge color").grid(row = 4 , column= 2, padx = 5 , pady= 5)
     ctk.CTkLabel(main_frame , text = "Grid color").grid(row = 5 , column= 0, padx = 5 , pady= 5)
     ctk.CTkLabel(main_frame , text = "Select the grid Style").grid(row = 5 , column= 2, padx = 5 , pady= 5)
-    grid_style = ctk.CTkComboBox(main_frame , values= ["Solid line", "Dashed line" , "Dash-dot line" , "Dotted line" , "No grid"],command=chart_style)
+    grid_style = ctk.CTkComboBox(main_frame , values= ["Solid line", "Dashed line" , "Dash-dot line" , "Dotted line" , "No grid"] , command= chart_style1)
     grid_style.set(list_of_select_colors[11])
     grid_style.grid(row = 5 , column = 3 , padx = 10 , pady = 10 , sticky = "w")
-
     up_color_button = ctk.CTkButton(main_frame, text="" ,border_width=1,border_color="black",corner_radius=60, width=20, height=20, fg_color=list_of_select_colors[0], command=lambda :pick_color(up_color_button , 0))
     up_color_button.grid(row = 0 , column = 1 , padx = 10 , pady = 10 , sticky = "w")
     down_color_button = ctk.CTkButton(main_frame, text="" ,border_width=1,border_color="black", corner_radius=60,width=20, height=20, fg_color=list_of_select_colors[1], command=lambda :pick_color(down_color_button, 1))

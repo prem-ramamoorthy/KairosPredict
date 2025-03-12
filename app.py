@@ -10,9 +10,22 @@ from reset_password import open_reset_password
 from about_us_window import open_about_us
 from tradingview_ta import TA_Handler , Interval
 from register_window import open_register
-from chart_maker import plot_async
+from chart_maker import plot_advanced_candlestick
+import matplotlib.pyplot as plt
+import pandas as pd
 
-def get_stock_analysis(selected_stock):
+sample_data = pd.read_csv("sample_data.csv")
+data = pd.DataFrame({
+    'Date': pd.to_datetime(sample_data['time'], unit='s'),
+    'Open': sample_data["open"],
+    'High': sample_data["high"],
+    'Low': sample_data["low"],
+    'Close': sample_data["close"],
+    'Volume': sample_data["Volume"]
+})
+fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8, 4), gridspec_kw={'height_ratios': [5, 1]})
+
+def get_stock_analysis(selected_stock): 
     set_stock_detail(selected_stock)
     try :
         handler = TA_Handler(
@@ -55,7 +68,7 @@ def open_stock_ui():
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
-    stock_window.geometry("880x900")
+    stock_window.geometry("880x870")
 
     header = ctk.CTkFrame(stock_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
@@ -136,7 +149,7 @@ def open_stock_ui():
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
-                                        hover_color="gray", width=50 )
+                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame ))
     show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),
@@ -146,7 +159,7 @@ def open_stock_ui():
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda: chart_config(root, switch_event, switch_var), width=50)
     chart_edit_button.grid(row=0, column=23, pady=5, padx=5, sticky="ew")
-    
+
 def switch_event():
     try : 
         if ctk.get_appearance_mode() == "Dark":

@@ -1,14 +1,14 @@
 [
-    "#c0c0c0",
-    "#ffffff",
-    "#000000",
-    "#000000",
-    "#000000",
-    "#000000",
-    "#c0c0c0",
-    "#ffffff",
+    "green",
+    "red",
+    "lime",
+    "red",
+    "green",
+    "red",
+    "green",
+    "red",
     "white",
-    "#000000",
-    "#ffffff",
-    "No grid"
+    "black",
+    "gray",
+    "Solid line"
 ]

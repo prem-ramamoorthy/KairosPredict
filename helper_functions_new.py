@@ -9,7 +9,6 @@ import json
 import smtplib
 import ssl
 from email.message import EmailMessage
-from chart_maker import update_configuration
 
 def set_chart_style(value):
     global chart_style 
@@ -90,7 +89,6 @@ def register_user(root , reg_window , setup_ui ,username , password , phone , em
 def save_colors(filename, colors , chart_edit_window):
     with open(filename, 'w') as file:
         json.dump(colors, file, indent=4)
-    update_configuration()
     try : 
         chart_edit_window.destroy()
     except Exception as e :
@@ -270,10 +268,9 @@ def reset(chart_edit_window):
     save_colors("chart_configuration" , list_of_select_colors , None )
     chart_edit_window.destroy()
 
-def chart_style(selected_style):
+def chart_style1(selected_style):
     global list_of_select_colors
     list_of_select_colors[11] = selected_style 
-    print(list_of_select_colors)
 
 def pick_color(color_button , no):
     global list_of_select_colors
