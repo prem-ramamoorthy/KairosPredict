@@ -13,6 +13,7 @@ from register_window import open_register
 from chart_maker import plot_advanced_candlestick
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 sample_data = pd.read_csv("sample_data.csv")
 data = pd.DataFrame({
@@ -77,8 +78,8 @@ def open_stock_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=10, padx=20 ,sticky = "se" )
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
+    logo = ctk.CTkImage(light_image=Image.open(os.path.join("static", "images", "logo.png")), 
+                        dark_image=Image.open(os.path.join("static", "images", "logo-w.png")),
                         size=(200, 60))
     
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
