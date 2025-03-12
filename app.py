@@ -13,7 +13,6 @@ from register_window import open_register
 from chart_maker import plot_advanced_candlestick
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
 
 sample_data = pd.read_csv("sample_data.csv")
 data = pd.DataFrame({
@@ -24,7 +23,7 @@ data = pd.DataFrame({
     'Close': sample_data["close"],
     'Volume': sample_data["Volume"]
 })
-fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8, 4), gridspec_kw={'height_ratios': [5, 1]})
+fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8,4), gridspec_kw={'height_ratios': [5, 1]})
 
 def get_stock_analysis(selected_stock): 
     set_stock_detail(selected_stock)
@@ -59,7 +58,13 @@ def get_stock_analysis(selected_stock):
             analysis_label.configure(text=f"⚠️ No data available")
     except Exception as e :
         analysis_label.configure(text=f"⚠️ Error: {str(e)}")
-        
+
+def clear_figures():
+    global ax_candle , ax_volume , fig
+    ax_candle.clear()
+    ax_volume.clear()
+    fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8, 4), gridspec_kw={'height_ratios': [5, 1]})
+
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
         time_frame_button , timeframe_label , show_chart_button
@@ -78,10 +83,9 @@ def open_stock_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=10, padx=20 ,sticky = "se" )
     
-    logo = ctk.CTkImage(light_image=Image.open(os.path.join("static", "images", "logo.png")), 
-                        dark_image=Image.open(os.path.join("static", "images", "logo-w.png")),
+    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
+                        dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
-    
     ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold")).grid(row=1, column=0, pady=1, padx=20, sticky="ew")
@@ -150,7 +154,7 @@ def open_stock_ui():
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
-                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame ))
+                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style()))
     show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),

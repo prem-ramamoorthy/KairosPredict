@@ -12,7 +12,15 @@ from email.message import EmailMessage
 
 def set_chart_style(value):
     global chart_style 
-    chart_style = value
+    candle_styles = {
+        "Candlestick chart": "candle",
+        "Line chart": "line",
+        "OHLC chart": "ohlc",
+        "Renko Chart": "renko",
+        "⚠️Point and Figure Chart" : "pnf"
+    }
+    selected_candle_style = candle_styles.get(value,"candle")
+    chart_style = selected_candle_style
 
 def get_chart_style():
     global chart_style
@@ -367,7 +375,7 @@ profile_letter = "a"
 list_of_select_colors = load_colors("chart_configuration")
 current_user = None
 timeframe = '1d'
-chart_style = "Candlestick chart"
+chart_style = "candle"
 stock_detail = "AAPL"
 setup_db()
     

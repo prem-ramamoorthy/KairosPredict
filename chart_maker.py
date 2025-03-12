@@ -11,10 +11,9 @@ def load_colors(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return [] 
 
-import pandas as pd
-import mplfinance as mpf
-
-def plot_advanced_candlestick(data, ax_candle, ax_volume, fig, window):
+def plot_advanced_candlestick(data, ax_candle, ax_volume, fig, window ,clear , candle_style):
+    ax_candle.clear()
+    ax_volume.clear()
     chart_configuration = load_colors("chart_configuration")
     data['Date'] = pd.to_datetime(data['Date'])
     data_indexed = data.set_index('Date')
@@ -47,11 +46,15 @@ def plot_advanced_candlestick(data, ax_candle, ax_volume, fig, window):
         ax.grid(color=chart_configuration[10], linestyle=selected_grid_style)
     mpf.plot(
         data_indexed,
-        type="candle",
+        type=candle_style,
         style=s,
         ax=ax_candle,
         volume=ax_volume
     )
+    ax_candle.xaxis.set_visible(False)
+    fig.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.19, hspace=0.001, wspace=0.001)
+    fig.patch.set_edgecolor("black") 
+    fig.patch.set_linewidth(2) 
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
     canvas.get_tk_widget().grid(row= 0, column= 0)
