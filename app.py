@@ -24,7 +24,7 @@ data = pd.DataFrame({
     'Close': sample_data["close"],
     'Volume': sample_data["Volume"]
 })
-fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8,4), gridspec_kw={'height_ratios': [5, 1]})
+fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
 def get_stock_analysis(selected_stock): 
     set_stock_detail(selected_stock)
@@ -64,7 +64,7 @@ def clear_figures():
     global ax_candle , ax_volume , fig
     ax_candle.clear()
     ax_volume.clear()
-    fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8, 4), gridspec_kw={'height_ratios': [5, 1]})
+    fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5, 4), gridspec_kw={'height_ratios': [5, 1]})
 
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
@@ -75,7 +75,7 @@ def open_stock_ui():
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
-    stock_window.geometry("880x870")
+    stock_window.geometry("880x765+0+0")
 
     header = ctk.CTkFrame(stock_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
@@ -150,7 +150,7 @@ def open_stock_ui():
                                                text_color_disabled="black" if ctk.get_appearance_mode() == "light" else "white"
                                                )
     time_frame_button.grid(row=2, column=3, pady=10 , padx = 30)
-    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 500 , width= 800 )
+    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 400 , width= 860 )
     main_body_frame.grid(row = 3 , column = 0 , pady = 10 , padx = 10 )
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
