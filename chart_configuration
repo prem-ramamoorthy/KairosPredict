@@ -1,14 +1,14 @@
 [
-    "#a0a0a0",
-    "#ffffff",
+    "#FF7FFF",
+    "#00FFFF",
+    "#FF00FF",
+    "#00FFFF",
+    "#FF7FFF",
+    "#00FFFF",
+    "#FF7FFF",
+    "#00FFFF",
     "#000000",
-    "#000000",
-    "#000000",
-    "#000000",
-    "#c0c0c0",
-    "#ffffff",
-    "#dddddd",
-    "black",
-    "#000000",
-    "Dash-dot line"
+    "#FFFFFF",
+    "#7F7F7F",
+    "Solid line"
 ]

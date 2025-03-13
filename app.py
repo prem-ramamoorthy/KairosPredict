@@ -13,6 +13,7 @@ from register_window import open_register
 from chart_maker import plot_advanced_candlestick
 import matplotlib.pyplot as plt
 import pandas as pd
+from color_inverter import invert_color
 
 sample_data = pd.read_csv("sample_data.csv")
 data = pd.DataFrame({
@@ -67,7 +68,7 @@ def clear_figures():
 
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
-        time_frame_button , timeframe_label , show_chart_button
+        time_frame_button , timeframe_label , show_chart_button , main_body_frame
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
@@ -167,6 +168,9 @@ def open_stock_ui():
 
 def switch_event():
     try : 
+        chart_config = load_colors("chart_configuration")
+        inverted= invert_color(chart_config)
+        save_colors("chart_configuration", inverted ,None)
         if ctk.get_appearance_mode() == "Dark":
             show_chart_button.configure(text_color = "black" , border_color = "black")
             logout_button.configure(text_color = "black")
@@ -181,6 +185,10 @@ def switch_event():
             profile_button.configure(hover_color = "#CCA787")
     except Exception as e:
             pass
+    try:
+        plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style())
+    except Exception as e:
+        pass
     ctk.set_appearance_mode("light") if switch_var.get() == "on" else ctk.set_appearance_mode("dark")
 
 def setup_ui():
