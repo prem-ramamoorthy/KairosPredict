@@ -374,7 +374,7 @@ phone = ""
 profile_letter = "a"
 list_of_select_colors = load_colors("chart_configuration")
 current_user = None
-timeframe = '1d'
+timeframe = " 1d "
 chart_style = "candle"
 stock_detail = "AAPL"
 setup_db()

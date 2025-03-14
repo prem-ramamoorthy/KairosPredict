@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import json
+from data_generator import get_live_stock_data
 
 def load_colors(filename):
     try:
@@ -11,9 +12,23 @@ def load_colors(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return [] 
 
-def plot_advanced_candlestick(data, ax_candle, ax_volume, fig, window ,clear , candle_style):
+def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock ):
     ax_candle.clear()
     ax_volume.clear()
+    validity = get_live_stock_data(stock,time_frame, output_size="compact")
+    if validity == False :
+        print("Data Not genrated !!!")
+        sample_data = pd.read_csv("stock_data\\sample_data.csv")
+    else :
+        sample_data = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
+    data = pd.DataFrame({
+        'Date': sample_data["time"],
+        'Open': sample_data["open"],
+        'High': sample_data["high"],
+        'Low': sample_data["low"],
+        'Close': sample_data["close"],
+        'Volume': sample_data["Volume"]
+    })
     chart_configuration = load_colors("chart_configuration")
     data['Date'] = pd.to_datetime(data['Date'])
     data_indexed = data.set_index('Date')

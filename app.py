@@ -16,15 +16,7 @@ import pandas as pd
 from color_inverter import invert_color
 from images_ui import get_image
 
-sample_data = pd.read_csv("AAPL_1d.csv")
-data = pd.DataFrame({
-    'Date': sample_data["time"],
-    'Open': sample_data["open"],
-    'High': sample_data["high"],
-    'Low': sample_data["low"],
-    'Close': sample_data["close"],
-    'Volume': sample_data["Volume"]
-})
+
 fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
 def get_stock_analysis(selected_stock): 
@@ -127,10 +119,10 @@ def open_stock_ui():
     ctk.CTkLabel(element_frame, text="Plot Style", font=("Helvetica", 14, "bold")).grid(row=2, column=0, pady=3, padx=10)
     plot_style = ctk.CTkComboBox(element_frame, values=["Candlestick chart","Line chart","OHLC chart" ,"Renko Chart" ,"⚠️Point and Figure Chart"] , command= set_chart_style)
     plot_style.grid(row=2, column=1, pady=3, padx=10)
-    time_frame_button_var = ctk.StringVar(value="1d")
+    time_frame_button_var = ctk.StringVar(value=" 1d ")
     timeframe_label = ctk.CTkLabel(element_frame, text="Select TimeFrame :", font=("Helvetica", 14, "bold"))
     timeframe_label.grid(row = 2 , column = 2, pady=3, padx=10 , sticky = "w")
-    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=["1m", "5m" , "15m", "30m", "1h", "1d", "1w" , "1mo"],
+    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=[" 1m ", " 5m ", " 15m ", " 30m ", " 1h ", " 1d "],
                                                command=segmented_button_callback,
                                                variable=time_frame_button_var,
                                                corner_radius=10,
@@ -145,7 +137,7 @@ def open_stock_ui():
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
-                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style()))
+                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail()))
     show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_button = ctk.CTkButton(body_header, image=get_image("chart_edit_image"), text="Edit chart", font=("Helvetica", 10, "bold"),
@@ -173,7 +165,7 @@ def switch_event():
     except Exception as e:
             pass
     try:
-        plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style())
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail())
     except Exception as e:
         pass
     ctk.set_appearance_mode("light") if switch_var.get() == "on" else ctk.set_appearance_mode("dark")
