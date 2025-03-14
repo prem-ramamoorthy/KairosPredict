@@ -1,17 +1,10 @@
 import customtkinter as ctk
 from PIL import Image
-from helper_functions_new import make_circle , get_profile_letter
 
 logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
                         dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
 
-profile_image_light = make_circle(Image.open(r"static\profiles\{}.png".format(get_profile_letter())).convert("RGBA"))
-profile_image_dark = make_circle(Image.open(r"static\profiles\{}-w.png".format(get_profile_letter())).convert("RGBA"))
-
-profile_image = ctk.CTkImage(light_image=profile_image_light,
-                                 dark_image=profile_image_dark,
-                                 size=(35,35))
 logout_image = ctk.CTkImage(light_image=Image.open(r"static\images\logout-w.png"),
                                 dark_image=Image.open(r"static\images\logout.png"),
                                 size=(20,20))
@@ -52,7 +45,5 @@ def get_image(image) :
         return linkedin
     elif image == "settings_image":
         return settings_image
-    elif image=="profile_image":
-        return profile_image
     else :
         return None

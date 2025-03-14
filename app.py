@@ -16,9 +16,9 @@ import pandas as pd
 from color_inverter import invert_color
 from images_ui import get_image
 
-sample_data = pd.read_csv("sample_data.csv")
+sample_data = pd.read_csv("AAPL_1d.csv")
 data = pd.DataFrame({
-    'Date': pd.to_datetime(sample_data['time'], unit='s'),
+    'Date': sample_data["time"],
     'Open': sample_data["open"],
     'High': sample_data["high"],
     'Low': sample_data["low"],
@@ -96,9 +96,12 @@ def open_stock_ui():
     profile_image_light = make_circle(Image.open(r"static\profiles\{}.png".format(get_profile_letter())).convert("RGBA"))
     profile_image_dark = make_circle(Image.open(r"static\profiles\{}-w.png".format(get_profile_letter())).convert("RGBA"))
 
+    profile_image = ctk.CTkImage(light_image=profile_image_light,
+                                    dark_image=profile_image_dark,
+                                    size=(35,35))
     ctk.CTkLabel(body_header, text="Stock Analysis",
                  font=("Helvetica", 20, "bold")).grid(row=0, column=1, pady=3 , padx = 200 ,sticky="ew") 
-    profile_button = ctk.CTkButton(body_header, image=get_image("profile_image"), text="",
+    profile_button = ctk.CTkButton(body_header, image=profile_image, text="",
                  compound="top", fg_color="transparent", command=lambda :greet_user(root,switch_event,switch_var,list_of_details), width=50,
                 )
     profile_button.grid(row=0, column=20, pady=5, padx=1, sticky="e")
@@ -250,12 +253,27 @@ def setup_ui():
                   fg_color= "transparent", hover_color= "grey", 
                   text= "" , command= open_insta).grid(row=2, column=1, pady=3, padx=3)
 
+def get_back_to_light_mode():
+    if ctk.get_appearance_mode() == "Dark":
+        switch_event()
+    else :
+        None
+
+def fade_out_close(alpha=1.0):
+    if alpha > 0:
+        root.attributes("-alpha", alpha)
+        root.after(50, fade_out_close, alpha - 0.05)
+    else:
+        get_back_to_light_mode()
+        root.destroy()
+
 if __name__ == "__main__" :
     root = ctk.CTk()
     ctk.set_appearance_mode("light")
     ctk.set_default_color_theme("dark-blue")
     root.title("KairosPredict/login")
     root.geometry("345x580")
+    root.protocol("WM_DELETE_WINDOW", lambda: fade_out_close())   
     root.iconbitmap(r"static\images\icon.ico")
     setup_ui()
     current_user = get_user()
