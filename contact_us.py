@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import *
 from PIL import Image
 from helper_functions_new import submit_feedback
+from images_ui import get_image
 
 def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
     contact_us_window = ctk.CTkToplevel(root)
@@ -19,10 +20,7 @@ def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
                   fg_color= "red",hover_color= "#59BACC").grid(row=0, column=0, pady=10 , padx=40)
     contact_us_frame_header = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")
     contact_us_frame_header.grid(row=0, column=0, pady=10 , padx=10)
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(contact_us_frame_header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(contact_us_frame_header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(contact_us_frame_header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     feed_back_body = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")

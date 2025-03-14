@@ -3,6 +3,7 @@ from tkinter import messagebox
 import customtkinter as ctk 
 from PIL import Image
 from helper_functions_new import get_user , change_password , verify_otp ,send_otp , cancel1
+from images_ui import get_image
 
 def open_change_password(root , cancel ,switch_event , switch_var , setup_ui):
     current_user = get_user()
@@ -21,10 +22,7 @@ def open_change_password(root , cancel ,switch_event , switch_var , setup_ui):
     switch.grid(row=0, column=1, pady=20, padx= 15 ,sticky = "se")
     header = ctk.CTkFrame(change_password_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=5, sticky="ew")
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     
@@ -67,10 +65,7 @@ def open_otp_window(root , cancel , setup_ui , switch_event , switch_var ,userna
     switch.grid(row=0, column=1, pady=20, padx= 15 ,sticky = "se")
     header = ctk.CTkFrame(otp_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=5, sticky="ew")
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     
@@ -105,10 +100,7 @@ def open_change_password1(root , cancel ,switch_event , switch_var , setup_ui):
     switch.grid(row=0, column=1, pady=20, padx= 15 ,sticky = "se")
     header = ctk.CTkFrame(change_password_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=5, sticky="ew")
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     

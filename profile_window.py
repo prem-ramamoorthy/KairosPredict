@@ -1,6 +1,7 @@
 from tkinter import *
 import customtkinter as ctk 
 from PIL import Image
+from images_ui import get_image
 
 def greet_user(root , switch_event , switch_var , l):
     greet_window = ctk.CTkToplevel(root)
@@ -13,10 +14,7 @@ def greet_user(root , switch_event , switch_var , l):
                            variable=switch_var, onvalue="on", 
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=10, padx=10 , sticky = "w")
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 , sticky = "ew")
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 , sticky = "ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20 , sticky = "ew")
     header.grid_columnconfigure(0, weight=1)

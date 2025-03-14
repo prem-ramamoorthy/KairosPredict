@@ -1,6 +1,7 @@
 from tkinter import *
 import customtkinter as ctk 
 from PIL import Image
+from images_ui import get_image
 
 def open_about_us(root ,switch_event , switch_var , cancel , setup_ui):
     root.withdraw()
@@ -19,10 +20,7 @@ def open_about_us(root ,switch_event , switch_var , cancel , setup_ui):
     ctk.CTkButton(button_frame, text="Cancel", command=lambda :cancel(about_us_window , root , setup_ui) ,
                   fg_color= "red",hover_color= "#59BACC").grid(row=0, column=0, pady=10 , padx=40)
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     about_us_frame = ctk.CTkFrame(about_us_window, corner_radius=10, border_width=2, border_color="black")

@@ -14,6 +14,7 @@ from chart_maker import plot_advanced_candlestick
 import matplotlib.pyplot as plt
 import pandas as pd
 from color_inverter import invert_color
+from images_ui import get_image
 
 sample_data = pd.read_csv("sample_data.csv")
 data = pd.DataFrame({
@@ -84,10 +85,7 @@ def open_stock_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=10, padx=20 ,sticky = "se" )
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold")).grid(row=1, column=0, pady=1, padx=20, sticky="ew")
     header.grid_columnconfigure(0, weight=1)
@@ -98,28 +96,17 @@ def open_stock_ui():
     profile_image_light = make_circle(Image.open(r"static\profiles\{}.png".format(get_profile_letter())).convert("RGBA"))
     profile_image_dark = make_circle(Image.open(r"static\profiles\{}-w.png".format(get_profile_letter())).convert("RGBA"))
 
-    profile_image = ctk.CTkImage(light_image=profile_image_light,
-                                 dark_image=profile_image_dark,
-                                 size=(35,35))
-    
-    logout_image = ctk.CTkImage(light_image=Image.open(r"static\images\logout-w.png"),
-                                dark_image=Image.open(r"static\images\logout.png"),
-                                size=(20,20))
-    settings_image = ctk.CTkImage(light_image=Image.open(r"static\images\settings.png"),
-                                dark_image=Image.open(r"static\images\settings-w.png"),
-                                size=(20,20))
-
     ctk.CTkLabel(body_header, text="Stock Analysis",
                  font=("Helvetica", 20, "bold")).grid(row=0, column=1, pady=3 , padx = 200 ,sticky="ew") 
-    profile_button = ctk.CTkButton(body_header, image=profile_image, text="",
+    profile_button = ctk.CTkButton(body_header, image=get_image("profile_image"), text="",
                  compound="top", fg_color="transparent", command=lambda :greet_user(root,switch_event,switch_var,list_of_details), width=50,
                 )
     profile_button.grid(row=0, column=20, pady=5, padx=1, sticky="e")
-    logout_button = ctk.CTkButton(body_header, image=logout_image, text="Logout", font=("Helvetica", 10, "bold"),
+    logout_button = ctk.CTkButton(body_header, image=get_image("logout_image"), text="Logout", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda : cancel(stock_window, root , setup_ui), width=50)
     logout_button.grid(row=0, column=21, pady=5, padx=5, sticky="ew")
-    settings_button = ctk.CTkButton(body_header, image=settings_image, text="changePass", font=("Helvetica", 10, "bold"),
+    settings_button = ctk.CTkButton(body_header, image=get_image("settings_image"), text="changePass", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda :open_change_password1(root ,cancel ,switch_event , switch_var , setup_ui ), width=50)
     settings_button.grid(row=0, column=22, pady=5, padx=5, sticky="ew")
@@ -137,10 +124,10 @@ def open_stock_ui():
     ctk.CTkLabel(element_frame, text="Plot Style", font=("Helvetica", 14, "bold")).grid(row=2, column=0, pady=3, padx=10)
     plot_style = ctk.CTkComboBox(element_frame, values=["Candlestick chart","Line chart","OHLC chart" ,"Renko Chart" ,"⚠️Point and Figure Chart"] , command= set_chart_style)
     plot_style.grid(row=2, column=1, pady=3, padx=10)
-    time_frame_button_var = ctk.StringVar(value=" 1d ")
+    time_frame_button_var = ctk.StringVar(value="1d")
     timeframe_label = ctk.CTkLabel(element_frame, text="Select TimeFrame :", font=("Helvetica", 14, "bold"))
     timeframe_label.grid(row = 2 , column = 2, pady=3, padx=10 , sticky = "w")
-    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=[" 1m ", " 5m " , " 15m ", " 30m ", " 1h ", " 4h ", " 1d "],
+    time_frame_button = ctk.CTkSegmentedButton(element_frame, values=["1m", "5m" , "15m", "30m", "1h", "1d", "1w" , "1mo"],
                                                command=segmented_button_callback,
                                                variable=time_frame_button_var,
                                                corner_radius=10,
@@ -158,10 +145,7 @@ def open_stock_ui():
                                         hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick( data , ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style()))
     show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
 
-    chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),
-                                dark_image=Image.open(r"static\images\edit_chart-w.png"),
-                                size=(18,18))
-    chart_edit_button = ctk.CTkButton(body_header, image=chart_edit_image, text="Edit chart", font=("Helvetica", 10, "bold"),
+    chart_edit_button = ctk.CTkButton(body_header, image=get_image("chart_edit_image"), text="Edit chart", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda: chart_config(root, switch_event, switch_var), width=50)
     chart_edit_button.grid(row=0, column=23, pady=5, padx=5, sticky="ew")
@@ -201,10 +185,7 @@ def setup_ui():
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=20, padx=20 ,sticky = "se")
     
-    logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
-                        dark_image=Image.open(r"static\images\logo-w.png"),
-                        size=(200, 60))
-    ctk.CTkLabel(header, image=logo, text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
 
@@ -251,35 +232,21 @@ def setup_ui():
     ctk.CTkButton(extra_frame, text="About Us", text_color= "blue",
                    fg_color= "transparent" , hover_color="#d4f1f4" , command=lambda : open_about_us(root ,switch_event , switch_var , cancel , setup_ui)\
                    ).grid(row=1, column=1, pady=5 , padx = 5 )
-
-    #images 
-    instagram = ctk.CTkImage(light_image=Image.open(r"static\images\instagram.png"), 
-                        dark_image=Image.open(r"static\images\instagram-w.png"),
-                        size=(30,30))
-    facebook = ctk.CTkImage(light_image=Image.open(r"static\images\facebook.png"),
-                            dark_image=Image.open(r"static\images\facebook-w.png"),
-                            size=(30,30))
-    github = ctk.CTkImage(light_image=Image.open(r"static\images\github.png"),
-                          dark_image=Image.open(r"static\images\github-w.png"),
-                          size=(30,30))
-    linkedin = ctk.CTkImage(light_image=Image.open(r"static\images\linkedin.png"),
-                            dark_image=Image.open(r"static\images\linkedin-w.png"),
-                            size=(30,30))
     
     sign_in_frame = ctk.CTkFrame(root, corner_radius=10, border_width=2, border_color="black")
     sign_in_frame.grid(row=6, column=0, pady=3)
     ctk.CTkLabel(sign_in_frame, text="Follow us on  :", 
                  font=("Helvetica", 12, "bold")).grid(row=0, column=0, pady=3, padx=50)
-    ctk.CTkButton(sign_in_frame, image=github , 
+    ctk.CTkButton(sign_in_frame, image=get_image("github" ), 
                   fg_color= "transparent" , hover_color= "grey", 
                   text= "" ,command= open_github).grid(row=1, column=0, pady=3, padx=10)
-    ctk.CTkButton(sign_in_frame, image=facebook,
+    ctk.CTkButton(sign_in_frame, image=get_image("facebook"),
                   fg_color= "transparent", hover_color= "grey", 
                   text= "" , command= open_facebook).grid(row=1, column=1, pady=3,padx =3 )
-    ctk.CTkButton(sign_in_frame, image=linkedin,
+    ctk.CTkButton(sign_in_frame, image=get_image("linkedin"),
                   fg_color= "transparent", hover_color= "grey", 
                   text= "" , command= open_linkedin).grid(row=2, column=0, pady=3, padx=10)
-    ctk.CTkButton(sign_in_frame, image=instagram,
+    ctk.CTkButton(sign_in_frame, image=get_image("instagram"),
                   fg_color= "transparent", hover_color= "grey", 
                   text= "" , command= open_insta).grid(row=2, column=1, pady=3, padx=3)
 

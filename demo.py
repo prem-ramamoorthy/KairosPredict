@@ -1,35 +1,65 @@
-import customtkinter as ctk
-import mplfinance as mpf
+import requests
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-# Sample stock data (Date, Open, High, Low, Close, Volume)
-data = {
-    "Date": pd.date_range(start="2024-03-01", periods=10, freq="D"),
-    "Open": [100, 102, 104, 103, 106, 108, 107, 109, 111, 110],
-    "High": [105, 106, 107, 108, 110, 111, 112, 114, 115, 116],
-    "Low": [98, 100, 102, 101, 104, 106, 105, 108, 109, 108],
-    "Close": [102, 104, 103, 106, 108, 107, 109, 111, 110, 112],
-    "Volume": [1000, 1200, 1500, 1100, 1700, 1600, 1400, 1800, 2000, 1900],
+API_KEY = "QP8YX4WAKQDDMBRR"
+TIMEFRAME_MAPPING = {
+    "1m": ("1min", "TIME_SERIES_INTRADAY"),
+    "5m": ("5min", "TIME_SERIES_INTRADAY"),
+    "15m": ("15min", "TIME_SERIES_INTRADAY"),
+    "30m": ("30min", "TIME_SERIES_INTRADAY"),
+    "1h": ("60min", "TIME_SERIES_INTRADAY"),
+    "1d": (None, "TIME_SERIES_DAILY_ADJUSTED"),
+    "1w": (None, "TIME_SERIES_WEEKLY"),
+    "1mo": (None, "TIME_SERIES_MONTHLY")
 }
-df = pd.DataFrame(data)
-df.set_index("Date", inplace=True)
-ctk.set_appearance_mode("dark")
-root = ctk.CTk()
-root.geometry("700x600")
-root.title("Candlestick Chart in CustomTkinter")
-def plot_candlestick():
-    fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(6, 4), gridspec_kw={'height_ratios': [3, 1]})
-    mpf.plot(df, type="candle", style="charles", ax=ax_candle, volume=ax_volume)
 
-    canvas = FigureCanvasTkAgg(fig, master=frame)
-    canvas.draw()
-    canvas.get_tk_widget().pack(fill="both", expand=True)
-    
-frame = ctk.CTkFrame(root)
-frame.pack(pady=10, padx=10, fill="both", expand=True)
-plot_button = ctk.CTkButton(root, text="Plot Candlestick Chart", command=plot_candlestick)
-plot_button.pack(pady=10)
+def get_live_stock_data(symbol, interval, output_size="compact", save_json=True):
+    if interval not in TIMEFRAME_MAPPING:
+        print(f"Error: Unsupported interval '{interval}'. Choose from {list(TIMEFRAME_MAPPING.keys())}.")
+        return None
+    av_interval, function = TIMEFRAME_MAPPING[interval]
+    url = "https://www.alphavantage.co/query"
+    params = {
+        "function": function,
+        "symbol": symbol,
+        "apikey": API_KEY,
+        "outputsize": output_size
+    }
+    if av_interval: 
+        params["interval"] = av_interval
+    response = requests.get(url, params=params)
+    data = response.json()
+    if function == "TIME_SERIES_INTRADAY":
+        key = f"Time Series ({av_interval})"
+    elif function == "TIME_SERIES_DAILY_ADJUSTED":
+        key = "Time Series (Daily)"
+    elif function == "TIME_SERIES_WEEKLY":
+        key = "Weekly Time Series"
+    elif function == "TIME_SERIES_MONTHLY":
+        key = "Monthly Time Series"
+    else:
+        print("Error: Unexpected function type.")
+        return None
+    print(data)
+    if key not in data:
+        print(f"Error: No data available. Check API key, stock symbol, or rate limits.")
+        return None
+    time_series = data[key]
+    df = pd.DataFrame.from_dict(time_series, orient="index")
+    df.rename(columns={
+        "1. open": "Open",
+        "2. high": "High",
+        "3. low": "Low",
+        "4. close": "Close",
+        "5. volume": "Volume"
+    }, inplace=True)
+    df.index = pd.to_datetime(df.index)
+    df = df.sort_index()
+    csv_filename = f"{symbol}_{interval}.csv"
+    df.to_csv(csv_filename)
+    print(f"Data saved to {csv_filename}")
+    return df
 
-root.mainloop()
+stock_symbol = "AAPL"
+interval = "1m"
+live_data = get_live_stock_data(stock_symbol, interval)
