@@ -247,6 +247,8 @@ def fade_out_close(alpha=1.0):
         get_back_to_light_mode()
         for task in root.tk.call("after", "info"):
             root.after_cancel(task)
+        root.deiconify()
+        root.quit()
         root.destroy()
 
 if __name__ == "__main__" :
