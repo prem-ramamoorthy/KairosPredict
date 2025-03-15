@@ -7,7 +7,7 @@ def open_about_us(root ,switch_event , switch_var , cancel , setup_ui):
     root.withdraw()
     about_us_window = ctk.CTkToplevel(root)
     about_us_window.protocol("WM_DELETE_WINDOW", lambda: None)
-    about_us_window.title("About Us")
+    about_us_window.title("KairosPredict/About-Us")
     about_us_window.geometry("410x600")
     header = ctk.CTkFrame(about_us_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")

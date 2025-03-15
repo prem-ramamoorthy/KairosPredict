@@ -9,7 +9,7 @@ def chart_config(root, switch_event , switch_var):
     global chart_edit_window
     list_of_select_colors = get_list()
     chart_edit_window = ctk.CTkToplevel(root)
-    chart_edit_window.title("About Us")
+    chart_edit_window.title("KairosPredict/char-configuration")
     chart_edit_window.protocol("WM_DELETE_WINDOW", lambda: None)
     chart_edit_window.geometry("620x465+1500+500")
     header = ctk.CTkFrame(chart_edit_window ,corner_radius= 20, border_width= 2, border_color= "black")
