@@ -233,21 +233,12 @@ def setup_ui():
     ctk.CTkButton(sign_in_frame,
                    text="Instagram", command= open_insta).grid(row=2, column=1, pady=5, padx=5)
 
-def get_back_to_light_mode():
-    if ctk.get_appearance_mode() == "Dark":
-        switch_event()
-        root.destroy()
-    else :
-        root.destroy()
-        None
-
 if __name__ == "__main__" :
     root = ctk.CTk()
     ctk.set_appearance_mode("light")
     ctk.set_default_color_theme("dark-blue")
     root.title("KairosPredict/login")
-    root.geometry("345x580")
-    root.protocol("WM_DELETE_WINDOW", lambda: get_back_to_light_mode())   
+    root.geometry("345x580")   
     root.iconbitmap(r"static\images\icon.ico")
     setup_ui()
     current_user = get_user()
