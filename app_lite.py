@@ -257,4 +257,7 @@ if __name__ == "__main__" :
     root.iconbitmap(r"static\images\icon.ico")
     setup_ui()
     current_user = get_user()
-    root.mainloop()
+    try :
+        root.mainloop()
+    except Exception as e :
+        print(e)
