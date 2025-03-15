@@ -7,7 +7,7 @@ def greet_user(root , switch_event , switch_var , l):
     greet_window = ctk.CTkToplevel(root)
     greet_window.title("KairosPredict/GreetUser")
     length = len(l[2]+l[3])
-    greet_window.geometry("{}x375+1500+500".format(440+length))
+    greet_window.geometry("{}x350+1500+500".format(440+length))
     header = ctk.CTkFrame(greet_window ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
     switch = ctk.CTkSwitch(greet_window, text="Theme", command=switch_event,
@@ -17,7 +17,7 @@ def greet_user(root , switch_event , switch_var , l):
     try :
         ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     except Exception as e :
-        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 30, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
+        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 40, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20 , sticky = "ew")
     header.grid_columnconfigure(0, weight=1)
