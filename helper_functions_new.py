@@ -9,6 +9,7 @@ import json
 import smtplib
 import ssl
 from email.message import EmailMessage
+import re
 
 def set_chart_style(value):
     global chart_style 
@@ -72,12 +73,38 @@ def get_user_details():
     global username , first_name , last_name , email , phone 
     return [email,username,first_name,last_name,phone]
 
+def is_valid_email(email):
+    pattern = r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    if re.match(pattern, email):
+        return True, "Valid email address."
+    else:
+        return False, "Invalid email address."
+
+def is_valid_phone_number(phone):
+    pattern = r"^\+?\d{1,3}?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}$"
+    if re.match(pattern, phone):
+        return True, "Valid phone number."
+    else:
+        return False, "Invalid phone number."
+
 def register_user(root , reg_window , setup_ui ,username , password , phone , email , first_name , last_name , confirm_password ):
     if username == "" or password == "" or confirm_password == "":
         messagebox.showerror("Error", "All fields are required")
         return
     if password != confirm_password:
         messagebox.showerror("Error", "Passwords do not match")
+        return
+    value3 = is_valid_phone_number(phone)
+    if not value3[0]:
+        messagebox.showwarning("Error" , value3[1])
+        return
+    value1 = is_valid_email(email)
+    if not value1[0]:
+        messagebox.showwarning("Error" , value1[1])
+        return
+    value = is_valid_password(password)
+    if not value[0]:
+        messagebox.showwarning("Error" , value[1])
         return
     hashed_password = hash_password(password)
     try:
@@ -247,6 +274,10 @@ def get_stock_analysis(s):
     print(s)
 
 def change_password(root , change_password_window ,setup_ui, username , new_password , confirm_password ):
+    value = is_valid_password(new_password)
+    if not value[0]:
+        messagebox.showwarning("Error" , value[1])
+        return
     if new_password == "" or confirm_password == "":
         messagebox.showerror("Error", "All fields are required")
         return
@@ -364,6 +395,19 @@ def set_stock_detail(value):
 def get_stock_detail():
     global stock_detail
     return stock_detail
+
+def is_valid_password(password):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter."
+    if not re.search(r"[a-z]", password):
+        return False, "Password must contain at least one lowercase letter."
+    if not re.search(r"\d", password):
+        return False, "Password must contain at least one digit."
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False, "Password must contain at least one special character."
+    return True, "Password is valid."
 
 is_stock_window_opened = False
 username = ""

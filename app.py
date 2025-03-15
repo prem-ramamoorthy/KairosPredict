@@ -16,7 +16,6 @@ import pandas as pd
 from color_inverter import invert_color
 from images_ui import get_image
 
-
 fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
 def get_stock_analysis(selected_stock): 
