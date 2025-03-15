@@ -19,8 +19,10 @@ def open_about_us(root ,switch_event , switch_var , cancel , setup_ui):
     switch.grid(row=0, column=1, pady=10, padx=42)
     ctk.CTkButton(button_frame, text="Cancel", command=lambda :cancel(about_us_window , root , setup_ui) ,
                   fg_color= "red",hover_color= "#59BACC").grid(row=0, column=0, pady=10 , padx=40)
-    
-    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    try :
+        ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    except Exception as e :
+        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 50, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     about_us_frame = ctk.CTkFrame(about_us_window, corner_radius=10, border_width=2, border_color="black")

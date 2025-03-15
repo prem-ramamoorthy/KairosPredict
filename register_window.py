@@ -19,7 +19,10 @@ def open_register(root , switch_event , switch_var , cancel , setup_ui ):
                            offvalue="off", height= 10, width = 20)
     switch.grid(row=10, column=0, pady=30, padx=20 ,sticky = "se")
     
-    ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=15 , padx=5 )
+    try :
+        ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
+    except Exception as e :
+        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 50, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=10 , padx=20)
     
