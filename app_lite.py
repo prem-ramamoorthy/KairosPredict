@@ -239,28 +239,14 @@ def get_back_to_light_mode():
     else :
         None
 
-def fade_out_close(alpha=1.0):
-    if alpha > 0:
-        try :
-            root.attributes("-alpha", alpha)
-            root.after(50, fade_out_close, alpha - 0.05)
-        except Exception as e :
-            pass
-    else:
-        get_back_to_light_mode()
-        root.destroy()
-
 if __name__ == "__main__" :
     root = ctk.CTk()
     ctk.set_appearance_mode("light")
     ctk.set_default_color_theme("dark-blue")
     root.title("KairosPredict/login")
     root.geometry("345x580")
-    root.protocol("WM_DELETE_WINDOW", lambda: fade_out_close())   
+    root.protocol("WM_DELETE_WINDOW", lambda: get_back_to_light_mode())   
     root.iconbitmap(r"static\images\icon.ico")
     setup_ui()
     current_user = get_user()
-    try :
-        root.mainloop()
-    except Exception as e :
-        print(e)
+    root.mainloop()
