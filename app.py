@@ -51,7 +51,7 @@ def get_stock_analysis(selected_stock):
         else:
             analysis_label.configure(text=f"⚠️ No data available")
     except Exception as e :
-        analysis_label.configure(text=f"⚠️ Error: {str(e)}")
+        analysis_label.configure(text=f"⚠️ Error ")
 
 def clear_figures():
     global ax_candle , ax_volume , fig

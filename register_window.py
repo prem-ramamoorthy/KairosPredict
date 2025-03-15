@@ -22,7 +22,7 @@ def open_register(root , switch_event , switch_var , cancel , setup_ui ):
     try :
         ctk.CTkLabel(header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     except Exception as e :
-        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 50, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
+        ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 30, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=10 , padx=20)
     

@@ -23,7 +23,7 @@ def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
     try :
         ctk.CTkLabel(contact_us_frame_header, image=get_image("logo"), text="" , compound= "left").grid(row=0, column=0 , pady=10 , padx=5 )
     except Exception as e :
-        ctk.CTkLabel(contact_us_frame_header,text="KairosPredict", font=("Times New Roman", 50, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
+        ctk.CTkLabel(contact_us_frame_header,text="KairosPredict", font=("Times New Roman", 30, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(contact_us_frame_header, text="Empowering Decisions with Smart Predictions.",
                  font=("Helvetica", 13, "bold") ).grid(row=1, column=0, pady=5 , padx=20)
     feed_back_body = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")
