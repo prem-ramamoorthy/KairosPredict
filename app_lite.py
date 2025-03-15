@@ -236,7 +236,9 @@ def setup_ui():
 def get_back_to_light_mode():
     if ctk.get_appearance_mode() == "Dark":
         switch_event()
+        root.destroy()
     else :
+        root.destroy()
         None
 
 if __name__ == "__main__" :
