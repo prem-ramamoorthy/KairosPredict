@@ -241,8 +241,11 @@ def get_back_to_light_mode():
 
 def fade_out_close(alpha=1.0):
     if alpha > 0:
-        root.attributes("-alpha", alpha)
-        root.after(50, fade_out_close, alpha - 0.05)
+        try :
+            root.attributes("-alpha", alpha)
+            root.after(50, fade_out_close, alpha - 0.05)
+        except Exception as e :
+            pass
     else:
         get_back_to_light_mode()
         root.destroy()
