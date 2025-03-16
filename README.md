@@ -10,6 +10,11 @@
 ✅ Real-time stock data integration with **TradingView API**  
 ✅ **Multi-threading** for smooth performance  
 ✅ Supports **multiple machine learning models**  
+---
+## 📝Note
+
+⚠️those who cannot successfully run  app.py can use app_lite.py
+---
 
 ---
 
