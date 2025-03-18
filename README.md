@@ -11,8 +11,8 @@
 ✅ **Multi-threading** for smooth performance  
 ✅ Supports **multiple machine learning models**  
 ---
+
 ### ⚠️Those who cannot successfully run  app.py can use app_lite.py
----
 
 ---
 
