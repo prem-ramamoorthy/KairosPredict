@@ -1,0 +1,9 @@
+matplotlib
+pandas
+tradingview-ta
+mplfinance
+pillow
+requests
+scikit-learn
+seaborn
+scipy

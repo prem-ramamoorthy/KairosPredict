@@ -22,7 +22,7 @@
 2️⃣ Install dependencies using:  
 
 ```sh
-pip install numpy pandas scikit-learn pillow customtkinter mplfinance tkinter
+pip install -r requirements.txt
 
 ```
 
