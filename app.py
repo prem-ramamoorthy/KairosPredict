@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from color_inverter import invert_color
 from images_ui import get_image
+from moving_average_maker import set_moving_average_on_off ,\
+      get_moving_average_on_off , setmovingaverage , getmovingaverage ,set_moving_average_window
 
 fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
@@ -60,7 +62,7 @@ def clear_figures():
 
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
-        time_frame_button , timeframe_label , show_chart_button , main_body_frame
+        time_frame_button , timeframe_label , show_chart_button , main_body_frame , moving_average_window
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
@@ -107,19 +109,19 @@ def open_stock_ui():
 
     element_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black")
     element_frame.grid(row=2, column=0, pady=3 , padx=10, sticky="ew")
-    ctk.CTkLabel(element_frame, text="Select Stock Symbol", font=("Helvetica", 14, "bold")).grid(row=0, column=0, pady=3, padx=10)
+    ctk.CTkLabel(element_frame, text="Select Stock Symbol", font=("Helvetica", 14, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky = "w")
     stock_symbol = ctk.CTkComboBox(element_frame, values=["AAPL", "GOOGL", "AMZN", "TSLA"] , command = get_stock_analysis)
     stock_symbol.grid(row=0, column=1, pady=3, padx=10 , sticky = "w")
-    ctk.CTkLabel(element_frame, text="Analyst's Analysis :", font=("Helvetica", 14, "bold")).grid(row=0, column=2, pady=3, padx=10)
+    ctk.CTkLabel(element_frame, text="Analyst's Analysis ", font=("Helvetica", 14, "bold")).grid(row=0, column=2, pady=3, padx=10 , sticky = "w")
     temp_lable = ctk.CTkLabel(element_frame, text="", font=("Helvetica", 14, "bold"))
     temp_lable.grid(row=0, column=3, pady=3, padx=10)
     analysis_label = ctk.CTkLabel(element_frame, text=" <<<  your Recomendation will display here  >>>", font=("Helvetica", 14, "bold"))
     analysis_label.grid(row=0, column=3, pady=3)
     ctk.CTkLabel(element_frame, text="Plot Style", font=("Helvetica", 14, "bold")).grid(row=2, column=0, pady=3, padx=10)
     plot_style = ctk.CTkComboBox(element_frame, values=["Candlestick chart","Line chart","OHLC chart" ,"Renko Chart" ,"⚠️Point and Figure Chart"] , command= set_chart_style)
-    plot_style.grid(row=2, column=1, pady=3, padx=10)
+    plot_style.grid(row=2, column=1, pady=3, padx=10, sticky = "w")
     time_frame_button_var = ctk.StringVar(value=" 1d ")
-    timeframe_label = ctk.CTkLabel(element_frame, text="Select TimeFrame :", font=("Helvetica", 14, "bold"))
+    timeframe_label = ctk.CTkLabel(element_frame, text="Select TimeFrame ", font=("Helvetica", 14, "bold"))
     timeframe_label.grid(row = 2 , column = 2, pady=3, padx=10 , sticky = "w")
     time_frame_button = ctk.CTkSegmentedButton(element_frame, values=[" 1m ", " 5m ", " 15m ", " 30m ", " 1h ", " 1d "],
                                                command=segmented_button_callback,
@@ -136,13 +138,36 @@ def open_stock_ui():
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
-                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail()))
-    show_chart_button.grid(row=3, column=2, pady=10, padx= 10, sticky="ew")
+                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() ))
+    show_chart_button.grid(row=4, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_button = ctk.CTkButton(body_header, image=get_image("chart_edit_image"), text="Edit chart", font=("Helvetica", 10, "bold"),
                   hover_color="grey", fg_color="transparent", text_color= "black",
                   compound="top", command=lambda: chart_config(root, switch_event, switch_var), width=50)
     chart_edit_button.grid(row=0, column=23, pady=5, padx=5, sticky="ew")
+    moving_average_label = ctk.CTkLabel(element_frame, text="Moving Average ", font=("Helvetica", 14, "bold"))
+    moving_average_label.grid(row=3, column=0, pady=3, padx=10) 
+    moving_average_options = ctk.CTkComboBox(element_frame, values=["Simple Moving Average", "Exponential Moving Average", " ⚠️ Weighted Moving Average", "Triangular Moving Average", "⚠️Kaufman Adaptive Moving Average", "Hull Moving Average", "⚠️Volume Weighted Moving Average" ] , command= setmovingaverage) 
+    moving_average_options.grid(row=3, column=1, pady=3, padx=10)
+    moving_on_off_var = ctk.StringVar(value="off")
+    movin_average_on_off_label = ctk.CTkLabel(element_frame, text="Moving Average On/Off ", font=("Helvetica", 14, "bold"))
+    movin_average_on_off_label.grid(row=3, column=2, pady=3, padx=10)
+    moving_on_off_var = ctk.StringVar(value="Off")
+    moving_on_off_button = ctk.CTkSegmentedButton(element_frame, values=["on", "off"],
+                                                  variable=moving_on_off_var,
+                                                  corner_radius=10,
+                                                  border_width=2,
+                                                  command=set_moving_average_on_off,
+                                                  bg_color="#CFCFCF" if ctk.get_appearance_mode() == "light" else "transparent",
+                                                  text_color="black" if ctk.get_appearance_mode() == "light" else "white",
+                                                  text_color_disabled="black" if ctk.get_appearance_mode() == "light" else "white")
+    moving_on_off_button.grid(row=3, column=3, pady=3, padx=10)
+    moving_average_label_window = ctk.CTkLabel(element_frame, text="Moving Avg Window :", font=("Helvetica", 14, "bold"))
+    moving_average_label_window.grid(row=4, column=0, pady=3, padx=10)
+    moving_average_window = ctk.CTkEntry(element_frame, placeholder_text="Enter Window [1-200]")
+    moving_average_window.bind("<Enter>", lambda e: moving_average_window.configure(border_color="blue"))
+    moving_average_window.bind("<Leave>", lambda e: moving_average_window.configure(border_color="grey"))
+    moving_average_window.grid(row=4, column=1, pady=3, padx=10)
 
 def switch_event():
     try : 
@@ -164,7 +189,7 @@ def switch_event():
     except Exception as e:
             pass
     try:
-        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail())
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() )
     except Exception as e:
         pass
     ctk.set_appearance_mode("light") if switch_var.get() == "on" else ctk.set_appearance_mode("dark")

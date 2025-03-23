@@ -303,7 +303,7 @@ def change_password(root , change_password_window ,setup_ui, username , new_pass
 def reset(chart_edit_window):
     global list_of_select_colors
     list_of_select_colors = [ 'green','red', 'lime','red','green',\
-                         'red', 'green','red',"white","black",'gray' , "Solid line"]
+                         'red', 'green','blue',"white","black",'gray' , "Solid line"]
     save_colors("chart_configuration" , list_of_select_colors , None )
     chart_edit_window.destroy()
 

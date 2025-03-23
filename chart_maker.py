@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import json
 from data_generator import get_live_stock_data
+from moving_average_maker import plot_moving_average
 
 def load_colors(filename):
     try:
@@ -12,7 +13,7 @@ def load_colors(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return [] 
 
-def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock ):
+def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock , on_off  , window_size):
     ax_candle.clear()
     ax_volume.clear()
     validity = get_live_stock_data(stock,time_frame, output_size="compact")
@@ -36,7 +37,7 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
         up=chart_configuration[0], down=chart_configuration[1],
         wick={'up': chart_configuration[2], 'down': chart_configuration[3]},
         edge={'up': chart_configuration[4], 'down': chart_configuration[5]},
-        volume={'up': chart_configuration[6], 'down': chart_configuration[7]}
+        volume={'up': chart_configuration[6], 'down': chart_configuration[3]}
     )
     grid_styles = {
         "Dashed line": "--",
@@ -66,8 +67,12 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
             style=s,
             ax=ax_candle,
             volume=ax_volume,
-            mav=(10, 50)
         )
+        if on_off:
+            moving_avg = plot_moving_average(data["Close"], data["Volume"], window_size)
+            valid_dates = data.index[-len(moving_avg):]
+            ax_candle.plot(valid_dates, moving_avg, color=chart_configuration[7], linestyle='-', linewidth=1.5, label=f"{window_size}-Day MA")
+            ax_candle.legend()
         ax_candle.xaxis.set_visible(False)
         fig.subplots_adjust(left=0.1, right=0.98, top=0.98, bottom=0.19, hspace=0.001, wspace=0.001)
         fig.patch.set_edgecolor("black") 
