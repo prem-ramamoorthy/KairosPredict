@@ -1,14 +1,14 @@
 [
-    "green",
-    "red",
-    "lime",
-    "red",
-    "green",
-    "red",
-    "green",
-    "blue",
-    "white",
-    "black",
-    "gray",
-    "Solid line"
+    "#FFFFFF",
+    "#808080",
+    "#000000",
+    "#000000",
+    "#000000",
+    "#000000",
+    "#FFFFFF",
+    "#FF00FF",
+    "#DFDFDF",
+    "#000000",
+    "#000000",
+    "Dash-dot line"
 ]

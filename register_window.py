@@ -7,6 +7,7 @@ from images_ui import get_image
 
 def open_register(root , switch_event , switch_var , cancel , setup_ui ):
     reg_window = ctk.CTkToplevel(root)
+    reg_window.resizable(False, False)
     reg_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     reg_window.title("KairosPredict/register")

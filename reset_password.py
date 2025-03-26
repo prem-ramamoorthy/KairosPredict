@@ -9,6 +9,7 @@ from images_ui import get_image
 def open_reset_password(root , switch_event , switch_var , cancel ,  setup_ui):
     current_user = get_user()
     reset_password_window = ctk.CTkToplevel(root)
+    reset_password_window.resizable(False, False)
     reset_password_window.protocol("WM_DELETE_WINDOW", lambda: None)
     reset_password_window.title("KairosPredict/ResetPassword")
     reset_password_window.geometry("345x430")

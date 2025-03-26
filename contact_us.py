@@ -6,6 +6,7 @@ from images_ui import get_image
 
 def open_contact_us_window(root , switch_event , switch_var , cancel ,setup_ui):
     contact_us_window = ctk.CTkToplevel(root)
+    contact_us_window.resizable(False, False)
     contact_us_window.protocol("WM_DELETE_WINDOW", lambda: None)
     button_frame = ctk.CTkFrame(contact_us_window, corner_radius=10, border_width=2, border_color="black")
     button_frame.grid(row=3, column=0, pady=3 , padx=10)

@@ -66,6 +66,7 @@ def open_stock_ui():
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
+    stock_window.resizable(False, False)
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
@@ -281,6 +282,10 @@ def fade_out_close(alpha=1.0):
         root.after(50, fade_out_close, alpha - 0.05)
     else:
         get_back_to_light_mode()
+        for task in root.tk.call("after", "info"):
+            root.after_cancel(task)
+        root.deiconify()
+        root.quit()
         root.destroy()
 
 if __name__ == "__main__" :
@@ -289,6 +294,7 @@ if __name__ == "__main__" :
     ctk.set_default_color_theme("dark-blue")
     root.title("KairosPredict/login")
     root.geometry("345x580")
+    root.resizable(False, False)
     root.protocol("WM_DELETE_WINDOW", lambda: fade_out_close())   
     root.iconbitmap(r"static\images\icon.ico")
     setup_ui()

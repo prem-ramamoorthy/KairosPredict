@@ -6,6 +6,7 @@ from images_ui import get_image
 def open_about_us(root ,switch_event , switch_var , cancel , setup_ui):
     root.withdraw()
     about_us_window = ctk.CTkToplevel(root)
+    about_us_window.resizable(False, False)
     about_us_window.protocol("WM_DELETE_WINDOW", lambda: None)
     about_us_window.title("KairosPredict/About-Us")
     about_us_window.geometry("410x600")

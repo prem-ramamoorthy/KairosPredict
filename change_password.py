@@ -8,6 +8,7 @@ from images_ui import get_image
 def open_change_password(root , cancel ,switch_event , switch_var , setup_ui):
     current_user = get_user()
     change_password_window = ctk.CTkToplevel(root)
+    change_password_window.resizable(False, False)
     change_password_window.protocol("WM_DELETE_WINDOW", lambda: None)
     change_password_window.title("KairosPredict/ChangePassword")
     change_password_window.geometry("345x480+1500+500")
@@ -54,6 +55,7 @@ def open_change_password(root , cancel ,switch_event , switch_var , setup_ui):
 def open_otp_window(root , cancel , setup_ui , switch_event , switch_var ,username):
     global otp_window, otp_entry 
     otp_window = ctk.CTkToplevel(root)
+    otp_window.resizable(False, False)
     otp_window.protocol("WM_DELETE_WINDOW", lambda: None)
     otp_window.title("KairosPredict/OTP")
     otp_window.geometry("345x430")
@@ -92,6 +94,7 @@ def open_otp_window(root , cancel , setup_ui , switch_event , switch_var ,userna
 def open_change_password1(root , cancel ,switch_event , switch_var , setup_ui):
     current_user = get_user()
     change_password_window = ctk.CTkToplevel(root)
+    change_password_window.resizable(False, False)
     change_password_window.protocol("WM_DELETE_WINDOW", lambda: None)
     change_password_window.title("KairosPredict/ChangePassword")
     change_password_window.geometry("345x480+1500+500")

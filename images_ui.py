@@ -4,7 +4,6 @@ from PIL import Image
 logo = ctk.CTkImage(light_image=Image.open(r"static\images\logo.png"), 
                         dark_image=Image.open(r"static\images\logo-w.png"),
                         size=(200, 60))
-
 logout_image = ctk.CTkImage(light_image=Image.open(r"static\images\logout-w.png"),
                                 dark_image=Image.open(r"static\images\logout.png"),
                                 size=(20,20))
@@ -14,7 +13,6 @@ settings_image = ctk.CTkImage(light_image=Image.open(r"static\images\settings.pn
 chart_edit_image = ctk.CTkImage(light_image=Image.open(r"static\images\edit_chart.png"),
                                 dark_image=Image.open(r"static\images\edit_chart-w.png"),
                                 size=(18,18))
-
 instagram = ctk.CTkImage(light_image=Image.open(r"static\images\instagram.png"), 
                         dark_image=Image.open(r"static\images\instagram-w.png"),
                         size=(30,30))
