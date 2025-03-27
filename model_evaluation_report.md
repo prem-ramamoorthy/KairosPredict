@@ -23,8 +23,6 @@
 
 ## Classifier Performance (KMEANS)
 - **Accuracy**: 0.9062
-- **Classification Report**:
-- **Confusion Matrix**:
 
 
 
@@ -41,7 +39,9 @@
 - **Accuracy**: 0.5625
 - **Classification Report**:
 - **Confusion Matrix**:
-|        | Pred 0 | Pred 1 | Pred 2 | Pred 3 | Pred 4 | Pred 5 | Pred 6 | Pred 7 | Pred 8 | Pred 9 |
+# Confusion Matrix
+
+| X | Pred 0 | Pred 1 | Pred 2 | Pred 3 | Pred 4 | Pred 5 | Pred 6 | Pred 7 | Pred 8 | Pred 9 |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
 | True 0 | 2      | 0      | 0      | 0      | 0      | 0      | 0      | 0      | 0      | 0      |
 | True 1 | 0      | 8      | 0      | 0      | 0      | 0      | 0      | 0      | 0      | 0      |
