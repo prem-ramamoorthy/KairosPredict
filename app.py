@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from tkinter import *
 from PIL import Image
+from numpy import inner
+from sklearn import model_selection
 from helper_functions_new import *
 from contact_us import open_contact_us_window
 from profile_window import greet_user
@@ -66,11 +68,11 @@ def open_stock_ui():
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
-    stock_window.resizable(False, False)
+    # stock_window.resizable(False, False)
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
-    stock_window.geometry("880x765+0+0")
+    stock_window.geometry("880x1000+0+0")
 
     header = ctk.CTkFrame(stock_window  ,corner_radius= 20, border_width= 2, border_color= "black")
     header.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
@@ -135,7 +137,7 @@ def open_stock_ui():
                                                )
     time_frame_button.grid(row=2, column=3, pady=10 , padx = 30)
     main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 400 , width= 860 )
-    main_body_frame.grid(row = 3 , column = 0 , pady = 10 , padx = 10 )
+    main_body_frame.grid(row = 4 , column = 0 , pady = 10 , padx = 10 )
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
@@ -148,7 +150,7 @@ def open_stock_ui():
     chart_edit_button.grid(row=0, column=23, pady=5, padx=5, sticky="ew")
     moving_average_label = ctk.CTkLabel(element_frame, text="Moving Average ", font=("Helvetica", 14, "bold"))
     moving_average_label.grid(row=3, column=0, pady=3, padx=10) 
-    moving_average_options = ctk.CTkComboBox(element_frame, values=["Simple Moving Average", "Exponential Moving Average", " ⚠️ Weighted Moving Average", "Triangular Moving Average", "⚠️Kaufman Adaptive Moving Average", "Hull Moving Average", "⚠️Volume Weighted Moving Average" ] , command= setmovingaverage) 
+    moving_average_options = ctk.CTkComboBox(element_frame, values=["Simple Moving Average", "Exponential Moving Average", " Weighted Moving Average", "Triangular Moving Average", "Kaufman Adaptive Moving Average", "Hull Moving Average", "Volume Weighted Moving Average" ] , command= setmovingaverage) 
     moving_average_options.grid(row=3, column=1, pady=3, padx=10)
     moving_on_off_var = ctk.StringVar(value="off")
     movin_average_on_off_label = ctk.CTkLabel(element_frame, text="Moving Average On/Off ", font=("Helvetica", 14, "bold"))
@@ -165,10 +167,40 @@ def open_stock_ui():
     moving_on_off_button.grid(row=3, column=3, pady=3, padx=10)
     moving_average_label_window = ctk.CTkLabel(element_frame, text="Moving Avg Window :", font=("Helvetica", 14, "bold"))
     moving_average_label_window.grid(row=4, column=0, pady=3, padx=10)
-    moving_average_window = ctk.CTkEntry(element_frame, placeholder_text="Enter Window [1-200]")
+    moving_average_window = ctk.CTkEntry(element_frame, placeholder_text="Enter Window [1-90]")
     moving_average_window.bind("<Enter>", lambda e: moving_average_window.configure(border_color="blue"))
     moving_average_window.bind("<Leave>", lambda e: moving_average_window.configure(border_color="grey"))
     moving_average_window.grid(row=4, column=1, pady=3, padx=10)
+    model_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black")
+    model_frame.grid(row=3, column=0, pady=3 , padx=10, sticky="ew")
+    ctk.CTkLabel(model_frame, text="Model Prediction", font=("Helvetica", 18, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky="nsew")
+    model_frame.grid_columnconfigure(0, weight=1)
+    model_frame.grid_rowconfigure(0, weight=1)
+    inner_frame = ctk.CTkFrame(model_frame, corner_radius=10 )
+    inner_frame.grid(row=1, column=0, pady=10 , padx=10, sticky="ew")
+    ctk.CTkLabel(inner_frame, text="Select Model", font=("Helvetica", 14, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky="nsew")
+    l = []
+    def select_models(model):
+        if model in l :
+            l.remove(model)
+            if len(l) == 0:
+                models_label.configure(text="Selected Model : None")
+            else :
+                models_label.configure(text="Selected Model : " + " ,".join(l))
+        else :
+            l.append(model)
+            models_label.configure(text="Selected Model : " + " ,".join(l))
+
+    model_symbol = ctk.CTkComboBox(inner_frame, values=['kmeans', 'dbscan', 'agglomerative', "⚠️KNN", "⚠️Random Forest", "⚠️Logistic Regression", "⚠️SVM", "⚠️XGBoost"], 
+                                   dropdown_hover_color="lightblue", 
+                                   command=select_models)
+    model_symbol.grid(row=0, column=1, pady=5, padx=10, sticky="nsew")
+    models_label = ctk.CTkLabel(model_frame, text="Selected Model : None", font=("Helvetica", 14, "bold"))
+    models_label.grid(row=2, column=0, pady=3, padx=10, sticky="w")
+    try:
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get())
+    except Exception as e:
+        pass
 
 def switch_event():
     try : 

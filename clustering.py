@@ -9,6 +9,7 @@ import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
+import os
 
 def load_data(filepath):
     df = pd.read_csv(filepath)
@@ -42,7 +43,7 @@ def train_cluster_classifier(method):
     print(f"Training completed for classifier: {method}")
     return model
 
-def find_closest_match(new_point, df, classifier_models):
+def find_closest_match(new_point, df, classifier_models, distance_metric='euclidean'):
     feature_cols = [f'ud{i}' for i in range(1, 8)]
     new_point_df = pd.DataFrame([new_point[feature_cols]], columns=feature_cols)
     cluster_preds = [model.predict(new_point_df)[0] for model in classifier_models]
@@ -53,11 +54,24 @@ def find_closest_match(new_point, df, classifier_models):
     if cluster_df.empty:
         raise ValueError(f"No data found for predicted cluster {cluster_pred}")
     distance_cols = [f'ud{i}_d' for i in range(1, 8)]
-    distances = euclidean_distances([new_point[distance_cols]], cluster_df[distance_cols])
+    new_point_distances = new_point[distance_cols]
+
+    if distance_metric == 'euclidean':
+        distances = euclidean_distances([new_point_distances], cluster_df[distance_cols])
+    elif distance_metric == 'manhattan':
+        distances = np.abs(cluster_df[distance_cols] - new_point_distances).sum(axis=1).values.reshape(-1, 1)
+    elif distance_metric == 'cosine':
+        cluster_norms = np.linalg.norm(cluster_df[distance_cols], axis=1)
+        new_point_norm = np.linalg.norm(new_point_distances)
+        distances = 1 - np.dot(cluster_df[distance_cols], new_point_distances) / (cluster_norms * new_point_norm)
+        distances = distances.reshape(-1)  # Ensure distances is a 1D array
+    else:
+        raise ValueError(f"Unsupported distance metric: {distance_metric}")
+
     closest_idx = np.argmin(distances)
     return cluster_df.iloc[closest_idx]['pid']
 
-def main(methods=['kmeans', 'dbscan', 'agglomerative']):
+def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclidean' , visualize_cluster=False):
     filepath = 'stock_data\\generated_data\\AAPL_1D.csv'
     df = load_data(filepath)
     clustered_dfs = {}
@@ -82,8 +96,12 @@ def main(methods=['kmeans', 'dbscan', 'agglomerative']):
         'ud1_d': 0.01, 'ud2_d': -0.02, 'ud3_d': 0.00, 'ud4_d': 0.03, 'ud5_d': -0.01, 'ud6_d': -0.02, 'ud7_d': 0.02
     }
     new_data = pd.Series(new_data)
-    pid = find_closest_match(new_data, df, classifier_models)
-    print(f'Predicted Pattern ID using ensemble method: {pid}')
+    pid = find_closest_match(new_data, df, classifier_models , distance_metric=distance_metric)
+    print(f'Predicted Pattern ID using Ensemble Method: {pid}')
+    if visualize_cluster:
+        for method in methods:
+            visualize_clusters(method)
+    return pid
 
 def visualize_clusters(method):
     try:
@@ -106,9 +124,13 @@ def visualize_clusters(method):
         print(f"Error: Clustered data file for {method} not found.")
     except Exception as e:
         print(f"Error: {e}")
+    try:
+        os.remove(f'clusters\\cluster_Data\\clustered_data_{method}.csv')
+        print(f"Deleted file: clusters\\cluster_Data\\clustered_data_{method}.csv")
+    except FileNotFoundError:
+        print(f"File not found: clusters\\cluster_Data\\clustered_data_{method}.csv")
+    except Exception as e:
+        print(f"Error deleting file: {e}")
 
 if __name__ == '__main__':
-    main(['kmeans'])
-    visualize_clusters(method='kmeans')
-    visualize_clusters(method='dbscan')
-    visualize_clusters(method='agglomerative')
+    main(['kmeans' , 'dbscan', 'agglomerative'], distance_metric='cosine' , visualize_cluster = False)
