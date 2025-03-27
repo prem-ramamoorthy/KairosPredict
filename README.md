@@ -50,9 +50,15 @@ python app.py
 
 ## 🌟 Why Use KairosPredict?  
 
-✔️ **65%+ accuracy in predictions**  
-✔️ **User-friendly interface**  
-✔️ **Real-time stock data integration**  
+✔️ **65%+ Accuracy in Predictions**  
+Check model performances in **[model_evaluation_report.md](model_evaluation_report.md)** for detailed insights.  
+
+✔️ **User-Friendly Interface**  
+Designed with simplicity and efficiency to ensure a seamless experience for users.  
+
+✔️ **Real-Time Stock Data Integration**  
+Fetches and processes live stock market data for accurate and up-to-date predictions.  
+  
 
 📌 **Future Enhancements**  
 - 🔹 Integration with **AI-based models**  
