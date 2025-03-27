@@ -17,6 +17,8 @@ env/
 .DS_Store
 *.db
 
+*.pkl
+
 demo.py
 demo2.py
 
