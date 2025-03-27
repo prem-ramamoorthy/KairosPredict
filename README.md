@@ -50,7 +50,7 @@ python app.py
 
 ## 🌟 Why Use KairosPredict?  
 
-✔️ **65%+ accuracy in predictions**  
+✔️ **65%+ accuracy in predictions**[Check Model performances in <model_evaluation_report.md> ]
 ✔️ **User-friendly interface**  
 ✔️ **Real-time stock data integration**  
 
