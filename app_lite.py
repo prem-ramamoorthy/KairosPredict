@@ -61,7 +61,7 @@ def clear_figures():
 
 def open_stock_ui():
     global analysis_label , temp_lable ,  profile_button , chart_edit_button, settings_button, logout_button,\
-        time_frame_button , timeframe_label , show_chart_button , main_body_frame , moving_average_window
+        time_frame_button , timeframe_label , show_chart_button , main_body_frame , moving_average_window , predict_stock_button
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
@@ -76,7 +76,7 @@ def open_stock_ui():
     switch = ctk.CTkSwitch(stock_window, text="Theme", command=switch_event,
                            variable=switch_var, onvalue="on", 
                            offvalue="off", height= 10, width = 20)
-    switch.grid(row=10, column=0, pady=10, padx=20 ,sticky = "se" )
+    switch.grid(row=10, column=0, pady=3, padx=20 ,sticky = "se" )
     
     ctk.CTkLabel(header,text="KairosPredict", font=("Times New Roman", 50, "bold"), compound= "left").grid(row=0, column=0, pady=3, padx=50, sticky="ew")
     ctk.CTkLabel(header, text="Empowering Decisions with Smart Predictions.",
@@ -127,8 +127,8 @@ def open_stock_ui():
                                                text_color_disabled="black" if ctk.get_appearance_mode() == "light" else "white"
                                                )
     time_frame_button.grid(row=2, column=3, pady=10 , padx = 30)
-    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black" , height= 400 , width= 860 )
-    main_body_frame.grid(row = 4 , column = 0 , pady = 10 , padx = 10 )
+    main_body_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width= 2, border_color="black" , height= 400 , width= 860 )
+    main_body_frame.grid(row = 4 , column = 0 , pady = 3 , padx = 10 , sticky = "ew")
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
@@ -163,12 +163,14 @@ def open_stock_ui():
     moving_average_window.grid(row=4, column=1, pady=3, padx=10) 
     model_frame = ctk.CTkFrame(stock_window, corner_radius=10, border_width=2, border_color="black")
     model_frame.grid(row=3, column=0, pady=3 , padx=10, sticky="ew")
-    ctk.CTkLabel(model_frame, text="Model Prediction", font=("Helvetica", 18, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky="nsew")
+    inner_frame2 = ctk.CTkFrame(model_frame, corner_radius=10 )
+    inner_frame2.grid(row=0, column=0, pady=3, padx=10, sticky="ew")
+    ctk.CTkLabel(inner_frame2, text="Model Prediction", font=("Helvetica", 18, "bold")).grid(row=0, column=0, pady=3, padx=200, sticky="nsew")
     model_frame.grid_columnconfigure(0, weight=1)
     model_frame.grid_rowconfigure(0, weight=1)
     inner_frame = ctk.CTkFrame(model_frame, corner_radius=10 )
-    inner_frame.grid(row=1, column=0, pady=10 , padx=10, sticky="ew")
-    ctk.CTkLabel(inner_frame, text="Select Model", font=("Helvetica", 14, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky="nsew")
+    inner_frame.grid(row=1, column=0, pady=3 , padx=10, sticky="ew")
+    ctk.CTkLabel(inner_frame, text="Select Model(s)", font=("Helvetica", 14, "bold")).grid(row=0, column=0, pady=3, padx=10, sticky="nsew")
     l = []
     def select_models(model):
         if model in l :
@@ -181,16 +183,47 @@ def open_stock_ui():
             l.append(model)
             models_label.configure(text="Selected Model : " + " ,".join(l))
 
-    model_symbol = ctk.CTkComboBox(inner_frame, values=['kmeans', 'dbscan', 'agglomerative', "⚠️KNN", "⚠️Random Forest", "⚠️Logistic Regression", "⚠️SVM", "⚠️XGBoost"], 
+    model_symbol = ctk.CTkComboBox(inner_frame, values=['kmeans', 'dbscan', 'agglomerative', "⚠️KNN", "⚠️Random Forest" , "⚠️SVM", "⚠️XGBoost"], 
                                    dropdown_hover_color="lightblue", 
                                    command=select_models)
     model_symbol.grid(row=0, column=1, pady=5, padx=10, sticky="nsew")
-    models_label = ctk.CTkLabel(model_frame, text="Selected Model : None", font=("Helvetica", 14, "bold"))
-    models_label.grid(row=2, column=0, pady=3, padx=10, sticky="w")
+    inner_frame3 = ctk.CTkFrame(model_frame, corner_radius=10 )
+    inner_frame3.grid(row=2, column=0, pady=3 , padx=10, sticky="ew")
+    models_label = ctk.CTkLabel(inner_frame3, text="Selected Model : None", font=("Helvetica", 14, "bold"))
+    models_label.grid(row=0, column=0, pady=3, padx=10, sticky="w")
     try:
-        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get())
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() , True)
     except Exception as e:
         pass
+    distance_metric_label = ctk.CTkLabel(inner_frame, text="Distance Metric:", font=("Helvetica", 14, "bold"))
+    distance_metric_label.grid(row=0, column=2, pady=3, padx=10, sticky="w")
+    distance_metric = ctk.CTkComboBox(inner_frame, values=["euclidean", "manhattan", "cosine"], dropdown_hover_color="lightblue")
+    distance_metric.grid(row=0, column=3, pady=3, padx=10, sticky="w") 
+    distance_metric.set("euclidean")
+    cluster_label = ctk.CTkLabel(inner_frame, text="Clusters :", font=("Helvetica", 14, "bold"))
+    cluster_label.grid(row=0, column=4, pady=3, padx=10, sticky="w") 
+    cluster_entry = ctk.CTkEntry(inner_frame, placeholder_text="Enter NClusters[1-20]")
+    cluster_entry.bind("<Enter>", lambda e: cluster_entry.configure(border_color="blue"))
+    cluster_entry.bind("<Leave>", lambda e: cluster_entry.configure(border_color="grey"))
+    cluster_entry.grid(row=0, column=5, pady=3, padx=10, sticky="w")
+    visualize_on_off_label = ctk.CTkLabel(inner_frame2, text="Visualize Clusters :", font=("Helvetica", 14, "bold"))
+    visualize_on_off_label.grid(row=0, column=1, pady=3, padx=10, sticky="w")
+    visualize_on_off_var = ctk.StringVar(value="off")
+    visualize_on_off_button = ctk.CTkSegmentedButton(inner_frame2, values=["on", "off"],
+                                                    variable=visualize_on_off_var,
+                                                    corner_radius=10,
+                                                    border_width=2,
+                                                    command=set_visualization,
+                                                    bg_color="#CFCFCF" if ctk.get_appearance_mode() == "light" else "transparent",
+                                                    text_color="black" if ctk.get_appearance_mode() == "light" else "white",
+                                                    text_color_disabled="black" if ctk.get_appearance_mode() == "light" else "white")
+    visualize_on_off_button.grid(row=0, column=2, pady=3, padx=10, sticky="w")
+    predict_stock_button = ctk.CTkButton(inner_frame3, text="Predict", height=30, 
+                                         border_color="black", border_width=2, text_color="black",
+                                         corner_radius=30, font=("Arial", 16, "bold"), fg_color="transparent",
+                                         hover_color="gray", width=50, border_spacing = 10 ,
+                                         command=lambda: predict_stock(l, distance_metric.get(), cluster_entry.get(), visualize_on_off_var.get()))
+    predict_stock_button.grid(row=0, column=3, pady=10, padx=10, sticky="e")
 
 def switch_event():
     try : 
@@ -198,12 +231,14 @@ def switch_event():
         inverted= invert_color(chart_config)
         save_colors("chart_configuration", inverted ,None)
         if ctk.get_appearance_mode() == "Dark":
+            predict_stock_button.configure(text_color = "black" , border_color = "black")
             show_chart_button.configure(text_color = "black" , border_color = "black")
             logout_button.configure(text_color = "black" , border_color = "black")
             settings_button.configure(text_color = "black" , border_color = "black")
             chart_edit_button.configure(text_color = "black" , border_color = "black")
             profile_button.configure(hover_color ="#335878" , text_color= "black", border_color= "black")
         else :
+            predict_stock_button.configure(text_color = "white" , border_color = "white")
             show_chart_button.configure(text_color = "white" , border_color = "white")
             chart_edit_button.configure(text_color = "white", border_color = "white")
             logout_button.configure(text_color = "white", border_color = "white")
@@ -212,7 +247,7 @@ def switch_event():
     except Exception as e:
             pass
     try:
-        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() )
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get())
     except Exception as e:
         pass
     ctk.set_appearance_mode("light") if switch_var.get() == "on" else ctk.set_appearance_mode("dark")

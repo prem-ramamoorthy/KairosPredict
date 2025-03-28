@@ -71,13 +71,13 @@ def find_closest_match(new_point, df, classifier_models, distance_metric='euclid
     closest_idx = np.argmin(distances)
     return cluster_df.iloc[closest_idx]['pid']
 
-def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclidean' , visualize_cluster=False):
+def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclidean' , visualize_cluster=False , nclusters=10):
     filepath = 'stock_data\\generated_data\\AAPL_1D.csv'
     df = load_data(filepath)
     clustered_dfs = {}
     threads = []
     for method in methods:
-        t = threading.Thread(target=lambda m: clustered_dfs.update({m: perform_clustering(df.copy(), m)}), args=(method,))
+        t = threading.Thread(target=lambda m, n: clustered_dfs.update({m: perform_clustering(df.copy(), m, n)}), args=(method, nclusters))
         threads.append(t)
         t.start()
     for t in threads:
@@ -133,4 +133,4 @@ def visualize_clusters(method):
         print(f"Error deleting file: {e}")
 
 if __name__ == '__main__':
-    main(['kmeans' , 'dbscan', 'agglomerative'], distance_metric='cosine' , visualize_cluster = False)
+    main(['kmeans' , 'dbscan', 'agglomerative'], distance_metric='cosine' , visualize_cluster = False , nclusters=15)

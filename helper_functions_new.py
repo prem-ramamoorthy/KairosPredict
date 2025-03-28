@@ -11,6 +11,14 @@ import ssl
 from email.message import EmailMessage
 import re
 
+def set_visualization(value):
+    global visualization
+    visualization = value
+
+def get_visualization():
+    global visualization
+    return visualization
+
 def set_chart_style(value):
     global chart_style 
     candle_styles = {
@@ -421,5 +429,6 @@ current_user = None
 timeframe = " 1d "
 chart_style = "candle"
 stock_detail = "AAPL"
+visualization = "off"
 setup_db()
     

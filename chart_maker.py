@@ -13,15 +13,18 @@ def load_colors(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return [] 
 
-def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock , on_off  , window_size):
+def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock , on_off  , window_size , sample = False):
     ax_candle.clear()
     ax_volume.clear()
-    validity = get_live_stock_data(stock,time_frame, output_size="compact")
-    if validity == False :
-        print("Data Not genrated !!!")
-        sample_data = pd.read_csv("stock_data\\sample_data.csv")
+    if sample == True:
+        sample_data = sample_data = pd.read_csv("stock_data\\sample_data.csv")
     else :
-        sample_data = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
+        validity = get_live_stock_data(stock,time_frame, output_size="compact")
+        if validity == False :
+            print("Data Not genrated !!!")
+            sample_data = pd.read_csv("stock_data\\sample_data.csv")
+        else :
+            sample_data = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
     data = pd.DataFrame({
         'Date': sample_data["time"],
         'Open': sample_data["open"],
@@ -78,6 +81,35 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
         fig.patch.set_edgecolor("black") 
         fig.patch.set_linewidth(2) 
         canvas = FigureCanvasTkAgg(fig, master=window)
+
+        def on_key_press(event):
+            try:
+                xlim = ax_candle.get_xlim()
+                ylim = ax_candle.get_ylim()
+                zoom_factor = 0.1
+                pan_factor = 0.1
+
+                if event.key == 'a': 
+                    ax_candle.set_xlim(xlim[0] - (xlim[1] - xlim[0]) * zoom_factor, xlim[1])
+                elif event.key == 'd': 
+                    ax_candle.set_xlim(xlim[0] + (xlim[1] - xlim[0]) * zoom_factor, xlim[1])
+                elif event.key == 'w': 
+                    ax_candle.set_ylim(ylim[0] - (ylim[1] - ylim[0]) * zoom_factor, ylim[1])
+                elif event.key == 's':
+                    ax_candle.set_ylim(ylim[0] + (ylim[1] - ylim[0]) * zoom_factor, ylim[1])
+                elif event.key == 'left': 
+                    ax_candle.set_xlim(xlim[0] - (xlim[1] - xlim[0]) * pan_factor, xlim[1] - (xlim[1] - xlim[0]) * pan_factor)
+                elif event.key == 'right': 
+                    ax_candle.set_xlim(xlim[0] + (xlim[1] - xlim[0]) * pan_factor, xlim[1] + (xlim[1] - xlim[0]) * pan_factor)
+                elif event.key == 'up': 
+                    ax_candle.set_ylim(ylim[0] + (ylim[1] - ylim[0]) * pan_factor, ylim[1] + (ylim[1] - ylim[0]) * pan_factor)
+                elif event.key == 'down': 
+                    ax_candle.set_ylim(ylim[0] - (ylim[1] - ylim[0]) * pan_factor, ylim[1] - (ylim[1] - ylim[0]) * pan_factor)
+                canvas.draw()
+            except Exception as e:
+                print(f"Error during zoom or pan: {e}")
+
+        canvas.mpl_connect("key_press_event", on_key_press)
         canvas.draw()
         canvas.get_tk_widget().grid(row= 0, column= 0)
     except Exception as e :
