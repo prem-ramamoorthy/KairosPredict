@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter import messagebox ,colorchooser
+from tkinter import messagebox, colorchooser
+from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk, ImageDraw
 import hashlib
 import sqlite3
@@ -10,6 +11,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 import re
+from clustering import main
 
 def set_visualization(value):
     global visualization
@@ -416,6 +418,57 @@ def is_valid_password(password):
     if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
         return False, "Password must contain at least one special character."
     return True, "Password is valid."
+
+def predict_stock(l, distance_metric, cluster_entry, visualize_on_off_var) :
+    if l == "" or distance_metric == "" or cluster_entry == "":
+        messagebox.showerror("Error", "All fields are required")
+        return
+    try:
+        cluster_entry = int(cluster_entry)
+    except Exception as e :
+        messagebox.showerror("Error", "Cluster entry should be an integer")
+        return
+    if len(l) <= 0 :
+        messagebox.showerror("Error", "Select at least a Model")
+        return
+    if cluster_entry <= 0 and cluster_entry >= 20:
+        messagebox.showerror("Error", "Cluster entry should be between 0 and 20")
+    if distance_metric == "":
+        return
+    if cluster_entry == 0:
+        messagebox.showerror("Error", "Cluster entry should be greater than 0")
+        return
+    if visualize_on_off_var == "off" :
+        visualize_on_off_var = False
+    else:
+        visualize_on_off_var = True
+    loading_window = Toplevel()
+    loading_window.title("Loading")
+    loading_window.geometry("350x120")  # Set window size
+
+    Label(loading_window, text="Processing, please wait...").pack(pady=10, padx=20)
+
+    progress_bar = Progressbar(loading_window, orient="horizontal", length=300, mode='determinate', maximum=100)
+    progress_bar.pack(pady=10)
+    
+    def update_progress(progress):
+        progress_bar['value'] = progress
+        loading_window.update_idletasks()
+
+    def process_task(progress=0):
+        if progress != 100:
+            update_progress(progress)
+            loading_window.after(200, lambda: process_task(progress + 10))  # Recursive updates
+        else:
+            try:
+                main(l, distance_metric, visualize_cluster=visualize_on_off_var, nclusters=cluster_entry)
+                update_progress(100)
+            except Exception as e:
+                messagebox.showerror("Error", f"An error occurred: {e}")
+            finally:
+                loading_window.destroy()
+
+    process_task()
 
 is_stock_window_opened = False
 username = ""
