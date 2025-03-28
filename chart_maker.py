@@ -5,6 +5,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import json
 from data_generator import get_live_stock_data
 from moving_average_maker import plot_moving_average
+from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
+from tkinter import filedialog
 
 def load_colors(filename):
     try:
@@ -105,12 +107,21 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
                     ax_candle.set_ylim(ylim[0] + (ylim[1] - ylim[0]) * pan_factor, ylim[1] + (ylim[1] - ylim[0]) * pan_factor)
                 elif event.key == 'down': 
                     ax_candle.set_ylim(ylim[0] - (ylim[1] - ylim[0]) * pan_factor, ylim[1] - (ylim[1] - ylim[0]) * pan_factor)
+                elif event.key == 'ctrl+s':  
+                    file_path = filedialog.asksaveasfilename(
+                        defaultextension=".png",
+                        filetypes=[("PNG files", "*.png"), ("All files", "*.*")]
+                    )
+                    if file_path:
+                        fig.savefig(file_path, dpi=300)
+                        print(f"Chart saved as {file_path}")
                 canvas.draw()
             except Exception as e:
-                print(f"Error during zoom or pan: {e}")
+                print(f"Error during zoom, pan, or save: {e}")
 
         canvas.mpl_connect("key_press_event", on_key_press)
         canvas.draw()
-        canvas.get_tk_widget().grid(row= 0, column= 0)
+        canvas.get_tk_widget().grid(row=0, column=0)
+
     except Exception as e :
         print(e)
