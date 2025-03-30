@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import csv
-import matplotlib.pyplot as plt
+import os
+from regex import T
 
 def find_pips(data: np.array, n_pips: int, dist_measure: int):
     # dist_measure
@@ -57,7 +58,55 @@ def check_trends(points):
             break
     return result
 
-def generate_data(stock_name ,time_frame, file) :
+def generate_data(stock_name ,time_frame) :
+    time_frame = " 1d "
+    stock_name = stock_name.upper()
+    stocks = {
+        "AAPL": {
+            " 1d ": "historical_data\\BATS_AAPL, 1D_5487a.csv",
+            " 1m ": "stock_data\\AAPL_1H_data.csv",
+            " 15m ": "stock_data\\AAPL_15M_data.csv",
+            " 5m ": "stock_data\\AAPL_5M_data.csv",
+            " 1h ": "stock_data\\AAPL_1M_data.csv",
+            " 30m ": "stock_data\\AAPL_30M_data.csv"
+        },
+        "GOOGL": {
+            " 1d ": "historical_data\\BATS_GOOGL, 1D_d7fec.csv",
+            " 1m ": "stock_data\\AAPL_1H_data.csv",
+            " 15m ": "stock_data\\AAPL_15M_data.csv",
+            " 5m ": "stock_data\\AAPL_5M_data.csv",
+            " 1h ": "stock_data\\AAPL_1M_data.csv",
+            " 30m ": "stock_data\\AAPL_30M_data.csv"
+        },
+        "TSLA": {
+           " 1d ": "historical_data\\BATS_TSLA, 1D_875c4.csv",
+            " 1m ": "stock_data\\AAPL_1H_data.csv",
+            " 15m ": "stock_data\\AAPL_15M_data.csv",
+            " 5m ": "stock_data\\AAPL_5M_data.csv",
+            " 1h ": "stock_data\\AAPL_1M_data.csv",
+            " 30m ": "stock_data\\AAPL_30M_data.csv"   
+        },
+        "AMZN": {
+           " 1d ": "historical_data\\BATS_AMZN, 1D_19ce0.csv",
+            " 1m ": "stock_data\\AAPL_1H_data.csv",
+            "15m ": "stock_data\\AAPL_15M_data.csv",
+            " 5m ": "stock_data\\AAPL_5M_data.csv",
+            " 1h ": "stock_data\\AAPL_1M_data.csv",
+            " 30m ": "stock_data\\AAPL_30M_data.csv"
+        }
+    }
+    file = stocks[stock_name][time_frame]
+    path = f'stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}'
+    data1 = pd.read_csv(f"stock_data\\{stock_name}_{time_frame}_data.csv")
+    data1['time'] = data1['time'].astype('datetime64[s]')
+    data1 = data1.set_index('time')
+    x = data1['close'].iloc[30:100].to_numpy()
+    _, pips_y = find_pips(x, 8, 3)
+    l=check_trends(pips_y)
+    if os.path.exists(path):
+        print(f"Path {path} already exists. Skipping data generation.")
+        return l
+    os.makedirs(path, exist_ok=True)
     data = pd.read_csv(file)
     data['time'] = data['time'].astype('datetime64[s]')
     data = data.set_index('time')
@@ -68,9 +117,9 @@ def generate_data(stock_name ,time_frame, file) :
     while True :
         try:
             segment = data.iloc[i:e]
-            segment.to_csv(f'stock_data\\stock_pattern\\{stock_name}\\{time_frame}\\{stock_name}_{pattern_no}.csv')
+            segment.to_csv(f'stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}\\{stock_name}_{pattern_no}.csv')
             x = data['close'].iloc[i:e].to_numpy()
-            pips_x, pips_y = find_pips(x,8, 3)
+            _, pips_y = find_pips(x,8, 3)
             l=check_trends(pips_y)
             result.append({pattern_no:l})
             i+=70
@@ -78,11 +127,15 @@ def generate_data(stock_name ,time_frame, file) :
             pattern_no+=1
         except Exception as e:
             break
-    return result
+    combined_data = {}
+    for d in result:
+        combined_data.update(d)
+    convert_to_csv(combined_data,stock_name , time_frame)
+    return l
 
 def convert_to_csv(data,s_name , time_frame):
-    output_file = f"stock_data\\generated_data\\{s_name}_{time_frame}.csv"
-    # Define the header
+    output_file = f"stock_data\\generated_data\\{s_name}_{time_frame.strip()}.csv"
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     header = ['pid', 'ud1', 'ud1_d', 'ud2', 'ud2_d', 'ud3', 'ud3_d', 'ud4', 'ud4_d', 
               'ud5', 'ud5_d', 'ud6', 'ud6_d', 'ud7', 'ud7_d']
 
@@ -95,9 +148,6 @@ def convert_to_csv(data,s_name , time_frame):
                 row.extend(trend)
             writer.writerow(row)
 
-if __name__ == "__main__" : 
-    data = generate_data("TSLA", "1D", "historical_data\BATS_TSLA, 1D_875c4.csv")
-    combined_data = {}
-    for d in data:
-        combined_data.update(d)
-    convert_to_csv(combined_data,"TSLA", "1D")
+if __name__ == "__main__" :
+    data = generate_data("AAPL", " 1d ")
+    print(data)

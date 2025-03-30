@@ -419,7 +419,7 @@ def is_valid_password(password):
         return False, "Password must contain at least one special character."
     return True, "Password is valid."
 
-def predict_stock(l, distance_metric, cluster_entry, visualize_on_off_var) :
+def predict_stock(l, distance_metric, cluster_entry, visualize_on_off_var , sname , t_frame , clear): 
     if l == "" or distance_metric == "" or cluster_entry == "":
         messagebox.showerror("Error", "All fields are required")
         return
@@ -461,7 +461,7 @@ def predict_stock(l, distance_metric, cluster_entry, visualize_on_off_var) :
             loading_window.after(200, lambda: process_task(progress + 10))  # Recursive updates
         else:
             try:
-                main(l, distance_metric, visualize_cluster=visualize_on_off_var, nclusters=cluster_entry)
+                main(l, distance_metric, visualize_on_off_var, cluster_entry , sname , t_frame )
                 update_progress(100)
             except Exception as e:
                 messagebox.showerror("Error", f"An error occurred: {e}")

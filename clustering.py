@@ -1,3 +1,6 @@
+from email import message
+import time
+from tkinter import messagebox
 import pandas as pd
 import numpy as np
 import threading
@@ -10,6 +13,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
 import os
+from pattern_generator import generate_data
+import mplfinance as mpf
 
 def load_data(filepath):
     df = pd.read_csv(filepath)
@@ -28,7 +33,6 @@ def perform_clustering(df, method='kmeans', n_clusters=10):
     df['cluster'] = model.fit_predict(df[feature_cols])
     joblib.dump(model, f'clusters\\cluster_models\\{method}_model.pkl')
     df.to_csv(f'clusters\\cluster_Data\\clustered_data_{method}.csv', index=False)
-    print(f"Clustering completed with {method}. Saved clustered data.")
     return df
 
 def train_cluster_classifier(method):
@@ -40,13 +44,14 @@ def train_cluster_classifier(method):
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     joblib.dump(model, f'clusters\\classifiers\\cluster_classifier_{method}.pkl')
-    print(f"Training completed for classifier: {method}")
     return model
 
 def find_closest_match(new_point, df, classifier_models, distance_metric='euclidean'):
     feature_cols = [f'ud{i}' for i in range(1, 8)]
     new_point_df = pd.DataFrame([new_point[feature_cols]], columns=feature_cols)
     cluster_preds = [model.predict(new_point_df)[0] for model in classifier_models]
+    """for i, model in enumerate(classifier_models):
+        print(f"Model {i + 1} ({model}): Predicted cluster {cluster_preds[i]}")"""
     cluster_pred = max(set(cluster_preds), key=cluster_preds.count)
     if 'cluster' not in df.columns:
         raise KeyError("The 'cluster' column is missing in the DataFrame. Ensure clustering was performed correctly.")
@@ -71,8 +76,13 @@ def find_closest_match(new_point, df, classifier_models, distance_metric='euclid
     closest_idx = np.argmin(distances)
     return cluster_df.iloc[closest_idx]['pid']
 
-def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclidean' , visualize_cluster=False , nclusters=10):
-    filepath = 'stock_data\\generated_data\\AAPL_1D.csv'
+def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclidean' , visualize_cluster=False , nclusters=10 , stock_name='AAPL', time_frame=' 1d '):
+    data = generate_data(stock_name  , time_frame)
+    if time_frame != ' 1d ':
+        print("Im here ")
+        messagebox.showwarning("Warning","This script currently works only for the '1d' time frame.") 
+        return
+    filepath = f'stock_data\\generated_data\\{stock_name}_{time_frame.strip()}.csv'
     df = load_data(filepath)
     clustered_dfs = {}
     threads = []
@@ -92,11 +102,25 @@ def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclid
         t.join()
     classifier_models = [joblib.load(f'clusters\\classifiers\\cluster_classifier_{method}.pkl') for method in methods]
     new_data = {
-        'ud1': 1, 'ud2': 0, 'ud3': -1, 'ud4': 1, 'ud5': 0, 'ud6': -1, 'ud7': 1,
-        'ud1_d': 0.01, 'ud2_d': -0.02, 'ud3_d': 0.00, 'ud4_d': 0.03, 'ud5_d': -0.01, 'ud6_d': -0.02, 'ud7_d': 0.02
+        'ud1': data[0][0], 'ud2': data[1][0], 'ud3': data[2][0], 'ud4': data[3][0], 'ud5': data[4][0], 'ud6': data[5][0], 'ud7': data[6][0],
+        'ud1_d': data[0][1], 'ud2_d': data[1][1], 'ud3_d':data[2][1], 'ud4_d': data[3][1], 'ud5_d': data[4][1], 'ud6_d': data[5][1], 'ud7_d': data[6][1]
     }
     new_data = pd.Series(new_data)
     pid = find_closest_match(new_data, df, classifier_models , distance_metric=distance_metric)
+    vpath = f"stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}\\{stock_name}_{int(pid)}.csv"
+    try:
+        plot_data = pd.read_csv(vpath)
+        plt.figure(figsize=(10, 6))
+        plt.plot(plot_data['close'] , label='Close Price')
+        plt.title(f'Pattern ID: {pid}')
+        plt.xlabel('Time')
+        plt.ylabel('Price')
+        plt.legend()
+        plt.show()
+    except FileNotFoundError:
+        print(f"Error: File not found at {vpath}")
+    except Exception as e:
+        print(f"Error: {e}")
     print(f'Predicted Pattern ID using Ensemble Method: {pid}')
     if visualize_cluster:
         for method in methods:
@@ -126,7 +150,6 @@ def visualize_clusters(method):
         print(f"Error: {e}")
     try:
         os.remove(f'clusters\\cluster_Data\\clustered_data_{method}.csv')
-        print(f"Deleted file: clusters\\cluster_Data\\clustered_data_{method}.csv")
     except FileNotFoundError:
         print(f"File not found: clusters\\cluster_Data\\clustered_data_{method}.csv")
     except Exception as e:

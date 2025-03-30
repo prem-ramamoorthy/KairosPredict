@@ -2,8 +2,6 @@ from turtle import distance
 import customtkinter as ctk
 from tkinter import *
 from PIL import Image
-from numpy import inner
-from sklearn import model_selection
 from helper_functions_new import *
 from contact_us import open_contact_us_window
 from profile_window import greet_user
@@ -69,7 +67,7 @@ def open_stock_ui():
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
-    # stock_window.resizable(False, False)
+    stock_window.resizable(False, False)
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
@@ -233,7 +231,7 @@ def open_stock_ui():
                                          border_color="black", border_width=2, text_color="black",
                                          corner_radius=30, font=("Arial", 16, "bold"), fg_color="transparent",
                                          hover_color="gray", width=50, border_spacing = 10 ,
-                                         command=lambda: predict_stock(l, distance_metric.get(), cluster_entry.get(), visualize_on_off_var.get()))
+                                         command=lambda: predict_stock(l, distance_metric.get(), cluster_entry.get(), visualize_on_off_var.get() , stock_symbol.get(), time_frame_button_var.get() , clear_figures()))
     predict_stock_button.grid(row=0, column=3, pady=10, padx=10, sticky="e")
 
 def switch_event():

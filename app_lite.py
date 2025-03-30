@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from color_inverter import invert_color
 from moving_average_maker import set_moving_average_on_off ,\
-      get_moving_average_on_off , setmovingaverage , getmovingaverage ,set_moving_average_window
+      get_moving_average_on_off , setmovingaverage 
 
 fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
@@ -65,7 +65,7 @@ def open_stock_ui():
     
     list_of_details = get_user_details()
     stock_window = ctk.CTkToplevel(root)
-    # stock_window.resizable(False, False)
+    stock_window.resizable(False, False)
     stock_window.protocol("WM_DELETE_WINDOW", lambda: None)
     root.withdraw()
     stock_window.title("KairosPredict/StockAnalysis")
@@ -222,7 +222,7 @@ def open_stock_ui():
                                          border_color="black", border_width=2, text_color="black",
                                          corner_radius=30, font=("Arial", 16, "bold"), fg_color="transparent",
                                          hover_color="gray", width=50, border_spacing = 10 ,
-                                         command=lambda: predict_stock(l, distance_metric.get(), cluster_entry.get(), visualize_on_off_var.get()))
+                                         command=lambda: predict_stock(l, distance_metric.get(), cluster_entry.get(), visualize_on_off_var.get() , stock_symbol.get(), time_frame_button_var.get(), moving_average_window.get()))
     predict_stock_button.grid(row=0, column=3, pady=10, padx=10, sticky="e")
 
 def switch_event():
