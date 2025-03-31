@@ -14,7 +14,7 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 import os
 from pattern_generator import generate_data
-import mplfinance as mpf
+from data_path import *
 
 def load_data(filepath):
     df = pd.read_csv(filepath)
@@ -108,19 +108,7 @@ def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclid
     new_data = pd.Series(new_data)
     pid = find_closest_match(new_data, df, classifier_models , distance_metric=distance_metric)
     vpath = f"stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}\\{stock_name}_{int(pid)}.csv"
-    try:
-        plot_data = pd.read_csv(vpath)
-        plt.figure(figsize=(10, 6))
-        plt.plot(plot_data['close'] , label='Close Price')
-        plt.title(f'Pattern ID: {pid}')
-        plt.xlabel('Time')
-        plt.ylabel('Price')
-        plt.legend()
-        plt.show()
-    except FileNotFoundError:
-        print(f"Error: File not found at {vpath}")
-    except Exception as e:
-        print(f"Error: {e}")
+    set_data_path(vpath)
     print(f'Predicted Pattern ID using Ensemble Method: {pid}')
     if visualize_cluster:
         for method in methods:

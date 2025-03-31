@@ -463,6 +463,7 @@ def predict_stock(l, distance_metric, cluster_entry, visualize_on_off_var , snam
             try:
                 main(l, distance_metric, visualize_on_off_var, cluster_entry , sname , t_frame )
                 update_progress(100)
+                messagebox.showinfo("Success", "Plot Again to see the Prediction...")
             except Exception as e:
                 messagebox.showerror("Error", f"An error occurred: {e}")
             finally:
@@ -483,5 +484,5 @@ timeframe = " 1d "
 chart_style = "candle"
 stock_detail = "AAPL"
 visualization = "off"
+data_path = None
 setup_db()
-    

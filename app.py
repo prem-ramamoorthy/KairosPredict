@@ -18,10 +18,12 @@ from color_inverter import invert_color
 from images_ui import get_image
 from moving_average_maker import set_moving_average_on_off ,\
       get_moving_average_on_off , setmovingaverage 
+from data_path import *
 
 fig, (ax_candle, ax_volume) = plt.subplots(2, 1, figsize=(8.5,4), gridspec_kw={'height_ratios': [5, 1]})
 
 def get_stock_analysis(selected_stock): 
+    set_data_path(None)
     set_stock_detail(selected_stock)
     try :
         handler = TA_Handler(
@@ -140,7 +142,7 @@ def open_stock_ui():
     show_chart_button = ctk.CTkButton(element_frame, text="Plot",height=30 ,  
                                       border_color="black", border_width=2, text_color= "black" ,
                                       corner_radius=30, font=("Arial", 16, "bold"),fg_color="transparent",
-                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get()))
+                                        hover_color="gray", width=50 , command= lambda : plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get(),False, get_data_path()))
     show_chart_button.grid(row=4, column=2, pady=10, padx= 10, sticky="ew")
 
     chart_edit_button = ctk.CTkButton(body_header, image=get_image("chart_edit_image"), text="Edit chart", font=("Helvetica", 10, "bold"),
@@ -201,7 +203,7 @@ def open_stock_ui():
     models_label = ctk.CTkLabel(inner_frame3, text="Selected Model : None", font=("Helvetica", 14, "bold"))
     models_label.grid(row=0, column=0, pady=3, padx=10, sticky="w")
     try:
-        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() , True)
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() , True  , get_data_path() )
     except Exception as e:
         pass
     distance_metric_label = ctk.CTkLabel(inner_frame, text="Distance Metric:", font=("Helvetica", 14, "bold"))
@@ -256,7 +258,7 @@ def switch_event():
     except Exception as e:
             pass
     try:
-        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get() )
+        plot_advanced_candlestick(ax_candle ,ax_volume , fig , main_body_frame , clear_figures() , get_chart_style() , get_time_frame() , get_stock_detail() , get_moving_average_on_off() , moving_average_window.get(), False , get_data_path())
     except Exception as e:
         pass
     ctk.set_appearance_mode("light") if switch_var.get() == "on" else ctk.set_appearance_mode("dark")

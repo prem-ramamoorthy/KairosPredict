@@ -15,11 +15,21 @@ def load_colors(filename):
     except (FileNotFoundError, json.JSONDecodeError):
         return [] 
 
-def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock , on_off  , window_size , sample = False):
+def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_style , time_frame , stock , on_off  , window_size , sample = False , datagiven = None):
     ax_candle.clear()
     ax_volume.clear()
     if sample == True:
         sample_data = sample_data = pd.read_csv("stock_data\\sample_data.csv")
+    elif datagiven :
+        validity = get_live_stock_data(stock,time_frame, output_size="compact")
+        if validity == False :
+            print("Data Not genrated !!!")
+            sample_data = pd.read_csv("stock_data\\sample_data.csv")
+        else :
+            data1 = pd.read_csv(datagiven)
+            data1['time'] = pd.to_datetime(data1['time']).dt.date
+            data2 = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
+            sample_data = pd.concat([data1, data2]).drop_duplicates().reset_index(drop=True)
     else :
         validity = get_live_stock_data(stock,time_frame, output_size="compact")
         if validity == False :
