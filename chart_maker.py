@@ -46,6 +46,10 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
         'Close': sample_data["close"],
         'Volume': sample_data["Volume"]
     })
+    if len(data) > 70:
+        ax_candle.axvline(x=99, color='red', linestyle='-', linewidth=1.5, label="Prediction_Line")
+        ax_candle.legend()
+
     chart_configuration = load_colors("chart_configuration")
     data['Date'] = pd.to_datetime(data['Date'])
     data_indexed = data.set_index('Date')
