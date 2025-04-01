@@ -21,15 +21,16 @@ def plot_advanced_candlestick(ax_candle, ax_volume, fig, window ,clear , candle_
     if sample == True:
         sample_data = sample_data = pd.read_csv("stock_data\\sample_data.csv")
     elif datagiven :
-        validity = get_live_stock_data(stock,time_frame, output_size="compact")
-        if validity == False :
-            print("Data Not genrated !!!")
-            sample_data = pd.read_csv("stock_data\\sample_data.csv")
-        else :
-            data1 = pd.read_csv(datagiven)
-            data1['time'] = pd.to_datetime(data1['time']).dt.date
-            data2 = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
-            sample_data = pd.concat([data1, data2]).drop_duplicates().reset_index(drop=True)
+        df_1d = pd.read_csv(f"stock_data\\{stock}_{time_frame}_data.csv")
+        df_41 = pd.read_csv(datagiven)
+        df_1d['time'] = pd.to_datetime(df_1d['time'])
+        df_41['time'] = pd.to_datetime(df_41['time'])
+        last_close_1d = df_1d.iloc[-1]['close']
+        first_close_41 = df_41.iloc[0]['close']
+        scaling_factor = last_close_1d / first_close_41
+        df_41[['open', 'high', 'low', 'close']] *= scaling_factor
+        df_41['time'] = df_1d['time'].max() + pd.to_timedelta(df_41.index + 1, unit='D')
+        sample_data = pd.concat([df_1d, df_41], ignore_index=True)
     else :
         validity = get_live_stock_data(stock,time_frame, output_size="compact")
         if validity == False :

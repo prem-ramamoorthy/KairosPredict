@@ -107,7 +107,7 @@ def main(methods=['kmeans', 'dbscan', 'agglomerative'] , distance_metric='euclid
     }
     new_data = pd.Series(new_data)
     pid = find_closest_match(new_data, df, classifier_models , distance_metric=distance_metric)
-    vpath = f"stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}\\{stock_name}_{int(pid)}.csv"
+    vpath = f"stock_data\\stock_pattern\\{stock_name}\\{time_frame.strip()}\\{stock_name}_{int(pid)+1}.csv"
     set_data_path(vpath)
     print(f'Predicted Pattern ID using Ensemble Method: {pid}')
     if visualize_cluster:
