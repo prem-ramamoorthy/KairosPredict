@@ -1,77 +1,105 @@
-# 🌟 KairosPredict  
+# 🌟 KairosPredict
 
-📈 **Predicting Future Stock Market Trends with Machine Learning**  
+📈 **Predicting Future Stock Market Trends with Machine Learning**
 
----
-
-## 🚀 Features  
-✅ Stock market trend prediction using **ML algorithms**  
-✅ Interactive **Graphical User Interface (GUI)**  
-✅ Real-time stock data integration with **TradingView API**  
-✅ **Multi-threading** for smooth performance  
-✅ Supports **multiple machine learning models**  
----
-
-### ⚠️Those who cannot successfully run  app.py can use app_lite.py
+KairosPredict is an intelligent stock trend prediction application that analyzes historical patterns using clustering algorithms and machine learning to forecast future market behavior. It provides real-time insights through a user-friendly graphical interface backed by robust data processing and model evaluation.
 
 ---
 
-## 🛠 Installation & Setup  
+## 🚀 Key Features
 
-1️⃣ Install **Python** (version >=3.8)  
-2️⃣ Install dependencies using:  
+✅ Predict future stock market trends using advanced **Machine Learning**  
+✅ Real-time stock data fetched using **TradingView API**  
+✅ Interactive and modern **Graphical User Interface (GUI)** built with CustomTkinter  
+✅ Supports multiple **clustering algorithms** (KMeans, DBSCAN, Agglomerative)  
+✅ Intelligent pattern detection using **Perceptually Important Points (PIPs)**  
+✅ **Multi-threaded** execution for smooth and responsive performance  
+✅ Customizable themes and chart configurations (Dark/Light mode, colors, MA lines)  
+✅ **Authentication system** with OTP-based password recovery  
+✅ Pattern cluster visualization and future pattern simulation  
+✅ Future-ready: Designed to scale as a **SaaS** platform
 
-```sh
-pip install -r requirements.txt
+---
 
+### ⚠️ Note
+
+If you're facing issues running `app.py`, you can use the lightweight version:  
+```bash
+python app_lite.py
 ```
 
-3️⃣ Run the application  
+---
 
-```sh
+## 🛠 Installation & Setup
+
+1️⃣ Install **Python** (version ≥ 3.8)
+
+2️⃣ Install dependencies:  
+```bash
+pip install -r requirements.txt
+```
+
+3️⃣ Run the application:  
+```bash
 python app.py
 ```
 
 ---
 
-## 📂 Modules & Their Usage  
+## 📂 Modules & Their Role
 
-| 🏷 Module | 📌 Usage |
-|-----------|---------|
-| 📊 **NumPy** | High-performance numerical computing |
-| 🎨 **CustomTkinter** | GUI framework for the stock dashboard |
-| 📑 **Pandas** | Data handling & analysis |
-| 🤖 **Scikit-Learn** | Machine Learning models |
-| ⚡ **Threading** | Ensures smooth app performance |
-| 📈 **TradingView API** | Fetches live stock data |
-| 🖼 **Pillow (PIL)** | Image processing & UI enhancements |
+| 🏷 Module           | 📌 Usage                                         |
+|--------------------|--------------------------------------------------|
+| 📊 **NumPy**        | Efficient numerical computations                 |
+| 🧠 **Scikit-learn** | ML algorithms: clustering, classification        |
+| 🖼 **CustomTkinter**| Beautiful, modern GUI for dashboard              |
+| 📑 **Pandas**       | Data handling, analysis, and transformations     |
+| ⚙️ **Threading**     | Enhances app responsiveness and multitasking     |
+| 📈 **TradingView API** | Fetches live stock market data              |
+| 🖼 **Pillow (PIL)** | For image and icon rendering in GUI              |
 
 ---
 
-## 🌟 Why Use KairosPredict?  
+## 🔍 How It Works
 
-✔️ **65%+ Accuracy in Predictions**  
-Check model performances in **[model_evaluation_report.md](model_evaluation_report.md)** for detailed insights.  
+1. **Pattern Extraction**: Uses a PIP algorithm to extract significant trend points from historical data using various distance metrics (Euclidean, Perpendicular, Vertical).
 
-✔️ **User-Friendly Interface**  
-Designed with simplicity and efficiency to ensure a seamless experience for users.  
+2. **Clustering**: Clusters the patterns using KMeans, DBSCAN, and Agglomerative clustering. Only unique patterns (based on ID) are stored.
 
-✔️ **Real-Time Stock Data Integration**  
-Fetches and processes live stock market data for accurate and up-to-date predictions.  
-  
+3. **Classification**: Current trend is analyzed and classified using a Random Forest model to find the most similar historical pattern.
 
-📌 **Future Enhancements**  
-- 🔹 Integration with **AI-based models**  
-- 🔹 Mobile and web-based versions  
+4. **Prediction**: The matched pattern’s future segment is scaled and aligned with the current trend, providing a **visual forecast** of the upcoming movement.
 
+5. **Voting System**: Among different cluster outputs, a voting mechanism selects the most accurate matching pattern for display.
 
-## architecture diagram
+---
 
-<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="650" height = "650">
+## 📈 Performance
 
+✔️ **Achieves over 65% prediction accuracy**  
+📄 Check detailed reports in [`model_evaluation_report.md`](model_evaluation_report.md)
 
+✔️ Scalable architecture designed for future integration with additional models and datasets.
 
-## 📞 Contact & Support  
+---
 
-📩 **Email**      : [KariosPredict@gamil.com]  
-📞 **phone no**   :6380498136
+## 🔮 Planned Enhancements
+
+- ✅ Expand ML model variety including **AI-driven deep learning** methods  
+- ✅ Add support for more **stocks and indices**  
+- ✅ Release **mobile and web versions**  
+- ✅ Enable full **SaaS deployment** with subscription-based access  
+- ✅ Integration of technical indicators and auto-detection tools
+
+---
+
+## 🧠 Architecture Diagram
+
+<img src="https://github.com/user-attachments/assets/26fa180c-d3ee-45ff-b305-d34d34b1a4e3" width="650" height="650" alt="KairosPredict Architecture"/>
+
+---
+
+## 📞 Contact & Support
+
+📧 **Email**: [KairosPredict@gmail.com](mailto:KairosPredict@gmail.com)  
+📱 **Phone**: +91 63804 98136
