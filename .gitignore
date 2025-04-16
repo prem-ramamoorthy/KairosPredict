@@ -25,3 +25,6 @@ demo2.py
 .vscode/
 .vscode/settings.json 
 clusters/
+
+chart_configuration
+stock_data/
