@@ -101,5 +101,5 @@ python app.py
 
 ## 📞 Contact & Support
 
-📧 **Email**: [KairosPredict@gmail.com](mailto:KairosPredict@gmail.com)  
+📧 **Email**: [KairosPredict@gmail.com](mailto:pkrprem2005@gmail.com)  
 📱 **Phone**: +91 63804 98136
